@@ -15,35 +15,12 @@ import {
   FieldLabel,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import { Controller, useForm } from "react-hook-form";
-import { loginFormSchema, LoginFormSchema } from "../forms/authSchema";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { authClient } from "@/server/auth/auth-client";
-import { toast } from "sonner";
 import Link from "next/link";
+import { Controller } from "react-hook-form";
+import { useLoginForm } from "../hooks/useLoginForm";
 
 const LoginForm = () => {
-  const form = useForm<LoginFormSchema>({
-    defaultValues: {
-      email: "",
-      password: "",
-    },
-    resolver: zodResolver(loginFormSchema),
-  });
-  const onSubmit = form.handleSubmit(async (data: LoginFormSchema) => {
-    try {
-      const { error } = await authClient.signIn.email({
-        email: data.email,
-        password: data.password,
-      });
-      if (error) {
-        toast.error(error.message);
-      }
-    } catch (error) {
-      console.error("Login error:", error);
-      toast.error("Terjadi kesalahan, silakan coba lagi.");
-    }
-  });
+  const { form, onSubmit } = useLoginForm();
   return (
     <div className="w-full max-w-md mx-auto flex flex-col gap-6">
       <Card>
@@ -101,7 +78,7 @@ const LoginForm = () => {
         <CardFooter className="text-center text-sm text-muted-foreground">
           Belum punya akun?{" "}
           <Link
-            href="/login"
+            href="/register"
             className="text-primary underline underline-offset-4 font-semibold"
           >
             Daftar
