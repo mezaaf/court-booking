@@ -16,19 +16,28 @@ import {
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
 
-const LoginForm = () => {
+const RegisterForm = () => {
   return (
     <div className="w-full max-w-md mx-auto flex flex-col gap-6">
       <Card>
         <CardHeader>
-          <CardTitle>Masuk ke akun Anda</CardTitle>
+          <CardTitle>Daftar Akun</CardTitle>
           <CardDescription>
-            Masukkan email Anda di bawah ini untuk masuk ke akun Anda
+            Masukkan email Anda di bawah ini untuk mendaftar akun baru
           </CardDescription>
         </CardHeader>
         <CardContent>
           <form>
             <FieldGroup>
+              <Field>
+                <FieldLabel htmlFor="name">Nama</FieldLabel>
+                <Input
+                  id="name"
+                  type="text"
+                  placeholder="Masukkan nama lengkap Anda"
+                  required
+                />
+              </Field>
               <Field>
                 <FieldLabel htmlFor="email">Email</FieldLabel>
                 <Input
@@ -39,15 +48,7 @@ const LoginForm = () => {
                 />
               </Field>
               <Field>
-                <div className="flex items-center">
-                  <FieldLabel htmlFor="password">Kata Sandi</FieldLabel>
-                  <Link
-                    href="#"
-                    className="ml-auto inline-block text-sm underline-offset-4 hover:underline"
-                  >
-                    Lupa kata sandi?
-                  </Link>
-                </div>
+                <FieldLabel htmlFor="password">Kata Sandi</FieldLabel>
                 <Input id="password" type="password" required />
               </Field>
               <Field>
@@ -58,10 +59,10 @@ const LoginForm = () => {
               </Field>
               <Field>
                 <Button variant="outline" type="button">
-                  Masuk dengan Google
+                  Daftar dengan Google
                 </Button>
                 <FieldDescription className="text-center">
-                  Belum memiliki akun? <Link href="/register">Daftar</Link>
+                  Sudah memiliki akun? <Link href="/login">Masuk</Link>
                 </FieldDescription>
               </Field>
             </FieldGroup>
@@ -72,4 +73,4 @@ const LoginForm = () => {
   );
 };
 
-export default LoginForm;
+export default RegisterForm;
