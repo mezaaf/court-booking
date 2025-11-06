@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
+import SubmitLoadingButton from "@/components/common/SubmitLoadingButton";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Field,
@@ -9,26 +9,23 @@ import {
   FieldLabel,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import { Controller, useForm } from "react-hook-form";
+import { Controller } from "react-hook-form";
+import { usePasswordForm } from "../hooks/usePasswordForm";
 
 const PasswordForm = () => {
-  const form = useForm({
-    defaultValues: {
-      currentPassword: "",
-      newPassword: "",
-    },
-  });
+  const { form, isLoading, onSubmit } = usePasswordForm();
+
   return (
     <Card>
       <CardHeader>
         <CardTitle>Ubah Kata Sandi</CardTitle>
       </CardHeader>
       <CardContent>
-        <form action="">
+        <form onSubmit={onSubmit}>
           <FieldGroup>
             <Controller
-              control={form.control}
               name="currentPassword"
+              control={form.control}
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
                   <FieldLabel>Kata Sandi Saat Ini</FieldLabel>
@@ -46,8 +43,8 @@ const PasswordForm = () => {
             />
 
             <Controller
-              control={form.control}
               name="newPassword"
+              control={form.control}
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
                   <FieldLabel>Kata Sandi Baru</FieldLabel>
@@ -63,9 +60,11 @@ const PasswordForm = () => {
                 </Field>
               )}
             />
-            <Button type="submit" className="bg-sky-700 hover:bg-sky-700/80">
-              Ubah Kata Sandi
-            </Button>
+            <SubmitLoadingButton
+              text="Ubah Kata Sandi"
+              loadingText="Mengubah..."
+              isLoading={isLoading}
+            />
           </FieldGroup>
         </form>
       </CardContent>

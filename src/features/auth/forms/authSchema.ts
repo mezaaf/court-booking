@@ -4,8 +4,8 @@ const nameSchema = z
   .string()
   .min(2, { message: "Nama harus terdiri dari minimal 2 karakter." })
   .max(50, { message: "Nama harus terdiri dari maksimal 50 karakter." });
-const emailSchema = z.email({ message: "Alamat email tidak valid." });
-const passwordSchema = z
+export const emailSchema = z.email({ message: "Alamat email tidak valid." });
+export const passwordSchema = z
   .string()
   .min(8, { message: "Password harus terdiri dari minimal 8 karakter." })
   .max(100, { message: "Password harus terdiri dari maksimal 100 karakter." });

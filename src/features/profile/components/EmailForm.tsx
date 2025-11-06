@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
+import SubmitLoadingButton from "@/components/common/SubmitLoadingButton";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Field,
@@ -9,23 +9,22 @@ import {
   FieldLabel,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import { Controller, useForm } from "react-hook-form";
+import { Controller } from "react-hook-form";
+import { useEmailForm } from "../hooks/useEmailForm";
 
 const EmailForm = ({ email }: { email: string }) => {
-  const form = useForm({
-    defaultValues: { email },
-  });
+  const { form, isLoading, onSubmit } = useEmailForm(email);
   return (
     <Card>
       <CardHeader>
         <CardTitle>Ubah Email</CardTitle>
       </CardHeader>
       <CardContent>
-        <form action="">
+        <form onSubmit={onSubmit}>
           <FieldGroup>
             <Controller
               control={form.control}
-              name="email"
+              name="newEmail"
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
                   <FieldLabel>Email</FieldLabel>
@@ -42,9 +41,11 @@ const EmailForm = ({ email }: { email: string }) => {
               )}
             />
 
-            <Button type="submit" className="bg-sky-700 hover:bg-sky-700/80">
-              Kirim Permintaan
-            </Button>
+            <SubmitLoadingButton
+              text="Ubah Email"
+              loadingText="Mengubah..."
+              isLoading={isLoading}
+            />
           </FieldGroup>
         </form>
       </CardContent>
