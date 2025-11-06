@@ -3,8 +3,10 @@ import { registerFormSchema, RegisterFormSchema } from "../forms/authSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { authClient } from "@/server/auth/auth-client";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 export const useRegisterForm = () => {
+  const router = useRouter();
   const form = useForm<RegisterFormSchema>({
     defaultValues: {
       name: "",
@@ -20,14 +22,18 @@ export const useRegisterForm = () => {
         name: data.name,
         email: data.email,
         password: data.password,
+        image: "/images/user.jpg",
         callbackURL: `${window.location.origin}/login`,
       });
       if (error) {
         toast.error(error.message);
+      } else {
+        form.reset();
+        toast.success(
+          "Berhasil mendaftar! Silakan periksa email Anda untuk verifikasi."
+        );
+        router.push("/login");
       }
-      toast.success(
-        "Berhasil mendaftar! Silakan periksa email Anda untuk verifikasi."
-      );
     } catch (error) {
       console.error("Registration error:", error);
       toast.error("Terjadi kesalahan saat mendaftar. Silakan coba lagi.");

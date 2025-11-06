@@ -3,9 +3,12 @@ import Image from "next/image";
 import { Button } from "../ui/button";
 import Link from "next/link";
 import { authClient } from "@/server/auth/auth-client";
+import UserDropdown from "./UserDropdown";
 
 const Navbar = () => {
   const { data: session, isPending } = authClient.useSession();
+  const user = session?.user;
+
   return (
     <div className="w-full fixed h-16 sm:h-18 lg:h-20 bg-sky-700 flex items-center justify-center">
       <div className="w-full max-w-7xl px-3 sm:px-5 lg:px-7 mx-auto flex items-center justify-between">
@@ -28,10 +31,12 @@ const Navbar = () => {
           <Link href="/about" className="text-white font-semibold">
             Booking
           </Link>
-          {(!session?.user || !isPending) && (
+          {!session?.user && !isPending ? (
             <Link href="/login">
               <Button className="bg-red-600 hover:bg-red-600/80">Masuk</Button>
             </Link>
+          ) : (
+            <>{user && <UserDropdown user={user} />}</>
           )}
         </div>
       </div>

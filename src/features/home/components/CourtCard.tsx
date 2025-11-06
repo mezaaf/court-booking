@@ -26,7 +26,9 @@ const CourtCard = ({
       <CardContent className="flex flex-col items-center">
         <h2 className="text-xl font-semibold mb-2">{title}</h2>
         <p>{price}</p>
-        <Button className="mt-4 w-full">Lihat Jadwal</Button>
+        <Button className="mt-4 w-full bg-sky-700 hover:bg-sky-700/80">
+          Lihat Jadwal
+        </Button>
       </CardContent>
     </Card>
   );
