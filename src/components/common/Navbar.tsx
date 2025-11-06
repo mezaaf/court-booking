@@ -4,10 +4,22 @@ import { Button } from "../ui/button";
 import Link from "next/link";
 import { authClient } from "@/server/auth/auth-client";
 import UserDropdown from "./UserDropdown";
+import { usePathname } from "next/navigation";
 
 const Navbar = () => {
+  const pathname = usePathname();
   const { data: session, isPending } = authClient.useSession();
   const user = session?.user;
+
+  const disableNavbar = [
+    "login",
+    "register",
+    "admin",
+    "not-found",
+    "unauthorized",
+  ];
+
+  if (disableNavbar.includes(pathname.split("/")[1] ?? "")) return null;
 
   return (
     <div className="w-full fixed h-16 sm:h-18 lg:h-20 bg-sky-700 flex items-center justify-center">

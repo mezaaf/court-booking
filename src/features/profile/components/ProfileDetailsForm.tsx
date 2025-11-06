@@ -1,9 +1,8 @@
 "use client";
+import SubmitLoadingButton from "@/components/common/SubmitLoadingButton";
+import UserAvatar from "@/components/common/UserAvatar";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { User } from "@/server/auth/auth";
-import { Controller, useForm } from "react-hook-form";
-import { profileFormSchema, ProfileFormSchema } from "../forms/profileForm";
-import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Field,
   FieldError,
@@ -11,41 +10,20 @@ import {
   FieldLabel,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import UserAvatar from "@/components/common/UserAvatar";
+import { User } from "@/server/auth/auth";
 import { XIcon } from "lucide-react";
+import { Controller } from "react-hook-form";
+import { useProfileForm } from "../hooks/useProfileForm";
 
 const ProfileDetailsForm = ({ user }: { user: User }) => {
-  const form = useForm<ProfileFormSchema>({
-    defaultValues: {
-      name: user.name || "",
-      image: user.image || null,
-    },
-    resolver: zodResolver(profileFormSchema),
-  });
-
-  const handleChangeImage = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        const base64String = reader.result as string;
-        form.setValue("image", base64String, { shouldDirty: true });
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
-  // eslint-disable-next-line react-hooks/incompatible-library
-  const imagePreview = form.watch("image");
-
-  const handleRemoveImage = () => {
-    if (user.image) {
-      form.setValue("image", user.image, { shouldDirty: true });
-    } else {
-      form.setValue("image", null, { shouldDirty: true });
-    }
-  };
+  const {
+    form,
+    onSubmit,
+    isLoading,
+    handleChangeImage,
+    imagePreview,
+    handleRemoveImage,
+  } = useProfileForm(user);
 
   return (
     <Card>
@@ -53,7 +31,7 @@ const ProfileDetailsForm = ({ user }: { user: User }) => {
         <CardTitle>Detail Akun</CardTitle>
       </CardHeader>
       <CardContent>
-        <form action="">
+        <form onSubmit={onSubmit}>
           <FieldGroup>
             <Controller
               control={form.control}
@@ -108,9 +86,11 @@ const ProfileDetailsForm = ({ user }: { user: User }) => {
                 </Button>
               </div>
             )}
-            <Button type="submit" className="bg-sky-700 hover:bg-sky-700/80">
-              Simpan Perubahan
-            </Button>
+            <SubmitLoadingButton
+              text="Simpan Perubahan"
+              loadingText="Menyimpan..."
+              isLoading={isLoading}
+            />
           </FieldGroup>
         </form>
       </CardContent>
