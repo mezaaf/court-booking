@@ -1,10 +1,12 @@
-import { useForm } from "react-hook-form";
-import { loginFormSchema, LoginFormSchema } from "../forms/authSchema";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { authClient } from "@/server/auth/auth-client";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
 import { toast } from "sonner";
+import { loginFormSchema, LoginFormSchema } from "../forms/authSchema";
 
 export const useLoginForm = () => {
+  const [isLoading, setIsLoading] = useState(false);
   const form = useForm<LoginFormSchema>({
     defaultValues: {
       email: "",
@@ -13,19 +15,16 @@ export const useLoginForm = () => {
     resolver: zodResolver(loginFormSchema),
   });
   const onSubmit = form.handleSubmit(async (data: LoginFormSchema) => {
-    try {
-      const { error } = await authClient.signIn.email({
-        email: data.email,
-        password: data.password,
-      });
-      if (error) {
-        toast.error(error.message);
-      }
-    } catch (error) {
-      console.error("Login error:", error);
-      toast.error("Terjadi kesalahan, silakan coba lagi.");
+    setIsLoading(true);
+    const { error } = await authClient.signIn.email({
+      email: data.email,
+      password: data.password,
+    });
+    if (error) {
+      toast.error(error.message);
     }
+    setIsLoading(false);
   });
 
-  return { form, onSubmit };
+  return { form, onSubmit, isLoading };
 };

@@ -13,6 +13,8 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import { authClient } from "@/server/auth/auth-client";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 const UserDropdown = ({ user }: { user: User }) => {
   return (
@@ -61,8 +63,16 @@ const AdminItem = () => {
 };
 
 const SignOutItem = () => {
+  const router = useRouter();
   const handleLogout = async () => {
-    await authClient.signOut();
+    const { error } = await authClient.signOut();
+    if (error) {
+      toast.error("Gagal logout. Silakan coba lagi.", {
+        description: error.message,
+      });
+    } else {
+      router.push("/");
+    }
   };
   return (
     <DropdownMenuItem onClick={handleLogout} className="cursor-pointer">

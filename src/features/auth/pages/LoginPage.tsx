@@ -1,18 +1,23 @@
 "use client";
 import { authClient } from "@/server/auth/auth-client";
-import LoginForm from "../components/LoginForm";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { use, useEffect } from "react";
+import LoginForm from "../components/LoginForm";
 
-const LoginPage = () => {
+const LoginPage = ({
+  searchParams,
+}: {
+  searchParams: Promise<{ redirect: string }>;
+}) => {
   const router = useRouter();
   const { data: session, isPending } = authClient.useSession();
+  const params = use(searchParams);
 
   useEffect(() => {
     if (session) {
-      router.replace("/");
+      router.replace(params.redirect);
     }
-  }, [session, router]);
+  }, [session, router, params.redirect]);
 
   if (isPending) {
     return <div>Loading...</div>;

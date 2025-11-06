@@ -1,5 +1,5 @@
 "use client";
-import { Button } from "@/components/ui/button";
+import SubmitLoadingButton from "@/components/common/SubmitLoadingButton";
 import {
   Card,
   CardContent,
@@ -20,7 +20,7 @@ import { Controller } from "react-hook-form";
 import { useLoginForm } from "../hooks/useLoginForm";
 
 const LoginForm = () => {
-  const { form, onSubmit } = useLoginForm();
+  const { form, onSubmit, isLoading } = useLoginForm();
   return (
     <div className="w-full max-w-md mx-auto flex flex-col gap-6">
       <Card>
@@ -70,9 +70,12 @@ const LoginForm = () => {
                 )}
               />
             </FieldGroup>
-            <Button type="submit" className="w-full">
-              Masuk
-            </Button>
+            <SubmitLoadingButton
+              className="w-full"
+              text="Masuk"
+              loadingText="Sedang masuk..."
+              isLoading={isLoading}
+            />
           </form>
         </CardContent>
         <CardFooter className="text-center text-sm text-muted-foreground">
