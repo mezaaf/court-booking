@@ -26,7 +26,7 @@ const NavMain = () => {
                   asChild
                   className={`hover:bg-sky-700 hover:text-white rounded-md py-5! transition-colors duration-150 ease-in-out ${
                     (pathname === item.url ||
-                      (item.url !== "/dashboard" &&
+                      (item.url !== "/admin" &&
                         pathname.startsWith(item.url))) &&
                     "bg-sky-700 text-white hover:bg-sky-700 hover:text-white"
                   }`}

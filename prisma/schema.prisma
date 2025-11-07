@@ -65,3 +65,14 @@ model Verification {
   createdAt  DateTime @default(now())
   updatedAt  DateTime @default(now()) @updatedAt
 }
+
+model Court {
+  id           String   @id @default(uuid())
+  name         String
+  description  String?
+  image        String?
+  pricePerHour Int
+  isActive     Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @default(now()) @updatedAt
+}

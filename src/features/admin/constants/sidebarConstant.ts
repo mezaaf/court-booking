@@ -18,7 +18,7 @@ export const SIDEBAR_MENU_LIST = [
       },
       {
         name: "Lapangan",
-        url: "/admin/lapangan",
+        url: "/admin/courts",
         icon: LayoutDashboard,
       },
       {
