@@ -2,7 +2,7 @@ export const COURT_TABLE_HEADER = [
   "No",
   "Nama Lapangan",
   "Deskripsi",
-  "Harga",
+  "Harga per Jam",
   "Ketersediaan",
   "Aksi",
 ];

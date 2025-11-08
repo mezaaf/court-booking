@@ -7,9 +7,11 @@ import { Court } from "@/generated/prisma/client";
 import useDataTable from "@/hooks/useDataTable";
 import { convertIDR } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
-import { PlusCircleIcon } from "lucide-react";
+import { PencilIcon, PlusCircleIcon } from "lucide-react";
+import Image from "next/image";
 import { useMemo, useState } from "react";
 import DialogCreateCourt from "../components/DialogCreateCourt";
+import DialogDeleteCourt from "../components/DialogDeleteCourt";
 import { COURT_TABLE_HEADER } from "../constant/courtConstant";
 import courtServices from "../services/court";
 
@@ -50,13 +52,32 @@ const CourtsPage = () => {
     return (courts || []).map((court, index) => {
       return [
         currentLimit * (currentPage - 1) + index + 1,
-        court.name,
+        <div className="flex items-center gap-2" key={court.id}>
+          <Image
+            src={court.image as string}
+            alt={court.name}
+            width={40}
+            height={40}
+            className="rounded"
+          />
+          {court.name}
+        </div>,
         court.description || "-",
         convertIDR(court.pricePerHour),
         court.isActive ? "Aktif" : "Tidak Aktif",
+        <div key={court.id} className="flex items-center gap-2">
+          <Button size={"icon"} className="bg-amber-400">
+            <PencilIcon className="size-4" />
+          </Button>
+          <DialogDeleteCourt
+            courtId={court.id}
+            courtName={court.name}
+            refetch={refetchCourts}
+          />
+        </div>,
       ];
     });
-  }, [courts, currentLimit, currentPage]);
+  }, [courts, currentLimit, currentPage, refetchCourts]);
 
   return (
     <div className="flex flex-col gap-4 sm:gap-6 lg:gap-8 w-full">

@@ -7,7 +7,7 @@ const courtServices = {
   // getCourtById: (id: string) => instance.get(`/courts/${id}`),
   createCourt: (data: CreateCourtFormSchema) => instance.post("/courts", data),
   // updateCourt: (id: string, data: any) => instance.put(`/courts/${id}`, data),
-  // deleteCourt: (id: string) => instance.delete(`/courts/${id}`),
+  deleteCourt: (id: string) => instance.delete(`/courts/${id}`),
 };
 
 export default courtServices;
