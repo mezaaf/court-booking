@@ -1,22 +1,18 @@
 "use client";
 import DataTable from "@/components/common/DataTable";
-import { Button } from "@/components/ui/button";
-import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Court } from "@/generated/prisma/client";
 import useDataTable from "@/hooks/useDataTable";
 import { convertIDR } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
-import { PencilIcon, PlusCircleIcon } from "lucide-react";
 import Image from "next/image";
-import { useMemo, useState } from "react";
-import DialogCreateCourt from "../components/DialogCreateCourt";
+import { useMemo } from "react";
+import DialogCourt from "../components/DialogCourt";
 import DialogDeleteCourt from "../components/DialogDeleteCourt";
 import { COURT_TABLE_HEADER } from "../constant/courtConstant";
 import courtServices from "../services/court";
 
 const CourtsPage = () => {
-  const [isOpen, setIsOpen] = useState(false);
   const {
     currentPage,
     currentLimit,
@@ -66,9 +62,19 @@ const CourtsPage = () => {
         convertIDR(court.pricePerHour),
         court.isActive ? "Aktif" : "Tidak Aktif",
         <div key={court.id} className="flex items-center gap-2">
-          <Button size={"icon"} className="bg-amber-400">
-            <PencilIcon className="size-4" />
-          </Button>
+          <DialogCourt
+            mode="update"
+            refetchCourts={refetchCourts}
+            courtId={court.id}
+            initialValues={{
+              name: court.name,
+              description: court.description || undefined,
+              pricePerHour: court.pricePerHour.toString(),
+              image: court.image as string,
+              isActive: court.isActive,
+            }}
+          />
+
           <DialogDeleteCourt
             courtId={court.id}
             courtName={court.name}
@@ -88,17 +94,7 @@ const CourtsPage = () => {
             placeholder="Cari nama / deskripsi..."
             onChange={(e) => handleSearchChange(e.target.value)}
           />
-          <Dialog open={isOpen} onOpenChange={setIsOpen}>
-            <DialogTrigger asChild>
-              <Button className="bg-sky-700 hover:bg-sky-700/80 flex items-center gap-2">
-                <PlusCircleIcon className="size-4" /> Tambah Lapangan
-              </Button>
-            </DialogTrigger>
-            <DialogCreateCourt
-              setIsOpen={setIsOpen}
-              refetchCourts={refetchCourts}
-            />
-          </Dialog>
+          <DialogCourt mode="create" refetchCourts={refetchCourts} />
         </div>
       </div>
       {isLoading && <div>Loading...</div>}

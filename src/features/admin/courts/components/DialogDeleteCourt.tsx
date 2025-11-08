@@ -59,7 +59,8 @@ const DialogDeleteCourt = ({
           di bawah untuk mengonfirmasi
         </Label>
         <Input
-          name="name"
+          autoFocus
+          id="name"
           type="text"
           placeholder={`Ketik '${courtName}'`}
           value={inputValue}

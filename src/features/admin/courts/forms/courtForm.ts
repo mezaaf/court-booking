@@ -1,6 +1,6 @@
 import z from "zod";
 
-export const createCourtFormSchema = z.object({
+export const courtFormSchema = z.object({
   name: z.string().min(1, "Nama lapangan wajib diisi"),
   description: z.string().optional(),
   pricePerHour: z.string().min(1, "Harga per jam wajib diisi"),
@@ -8,4 +8,4 @@ export const createCourtFormSchema = z.object({
   isActive: z.boolean().optional(),
 });
 
-export type CreateCourtFormSchema = z.infer<typeof createCourtFormSchema>;
+export type CourtFormSchema = z.infer<typeof courtFormSchema>;
