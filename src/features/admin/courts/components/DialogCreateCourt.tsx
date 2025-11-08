@@ -22,8 +22,10 @@ import { useDialogCreateCourt } from "../hooks/useDialogCreateCourt";
 
 const DialogCreateCourt = ({
   setIsOpen,
+  refetchCourts,
 }: {
   setIsOpen: (isOpen: boolean) => void;
+  refetchCourts: () => void;
 }) => {
   const {
     form,
@@ -34,7 +36,7 @@ const DialogCreateCourt = ({
     handleRemoveImage,
     isActive,
     setIsActive,
-  } = useDialogCreateCourt({ setIsOpen });
+  } = useDialogCreateCourt({ setIsOpen, refetchCourts });
   return (
     <DialogContent className="max-w-[425px]">
       <DialogTitle>Formulir Tambah Lapangan</DialogTitle>

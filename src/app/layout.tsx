@@ -3,6 +3,7 @@ import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
 import Navbar from "@/components/common/Navbar";
+import ReactQueryProvider from "@/providers/ReactQueryProvider";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -22,9 +23,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${plusJakartaSans.variable} font-sans antialiased`}>
-        <Navbar />
-        {children}
-        <Toaster richColors />
+        <ReactQueryProvider>
+          <Navbar />
+          {children}
+          <Toaster richColors />
+        </ReactQueryProvider>
       </body>
     </html>
   );

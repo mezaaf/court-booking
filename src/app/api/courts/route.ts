@@ -1,18 +1,54 @@
+import { Prisma } from "@/generated/prisma/client";
 import { auth } from "@/server/auth/auth";
 import prisma from "@/server/prisma";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function GET() {
-  const courts = await prisma.court.findMany({
-    orderBy: {
-      name: "asc",
-    },
-  });
-  return NextResponse.json({
-    status: 200,
-    message: "Courts fetched successfully",
-    data: courts,
-  });
+export async function GET(req: NextRequest) {
+  const searchParams = req.nextUrl.searchParams;
+  const query = searchParams.get("query") || "";
+  const page = Number(searchParams.get("page") || "1");
+  const limit = Number(searchParams.get("limit") || "10");
+
+  const offset = (page - 1) * limit;
+  try {
+    const where: Prisma.CourtWhereInput = {
+      AND: [
+        query
+          ? {
+              OR: [
+                { name: { contains: query, mode: "insensitive" } },
+                { description: { contains: query, mode: "insensitive" } },
+              ],
+            }
+          : {},
+      ],
+    };
+    const [total, courts] = await Promise.all([
+      prisma.court.count(),
+      prisma.court.findMany({
+        orderBy: {
+          name: "asc",
+        },
+        where,
+        skip: offset,
+        take: limit,
+      }),
+    ]);
+    return NextResponse.json({
+      status: 200,
+      message: "Courts fetched successfully",
+      total,
+      data: courts,
+    });
+  } catch (error) {
+    console.error("Error fetching courts: ", error);
+    return NextResponse.json({
+      status: 500,
+      message: "Error fetching courts",
+      total: 0,
+      data: null,
+    });
+  }
 }
 
 export async function POST(req: Request) {

@@ -10,8 +10,10 @@ import courtServices from "../services/court";
 
 export const useDialogCreateCourt = ({
   setIsOpen,
+  refetchCourts,
 }: {
   setIsOpen: (isOpen: boolean) => void;
+  refetchCourts: () => void;
 }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isActive, setIsActive] = useState(true);
@@ -37,6 +39,7 @@ export const useDialogCreateCourt = ({
       toast.success(response.data.message || "Lapangan berhasil ditambahkan");
       form.reset();
       setIsOpen(false);
+      refetchCourts();
     } else if (response.data.status === 401) {
       toast.error(response.data.message || "Unauthorized");
     } else if (response.data.status === 403) {
