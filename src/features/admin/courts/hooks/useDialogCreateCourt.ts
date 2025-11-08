@@ -1,11 +1,12 @@
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import {
   createCourtFormSchema,
   CreateCourtFormSchema,
 } from "../forms/courtForm";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { toast } from "sonner";
+import courtServices from "../services/court";
 
 export const useDialogCreateCourt = ({
   setIsOpen,
@@ -27,20 +28,25 @@ export const useDialogCreateCourt = ({
 
   const onSubmit = form.handleSubmit(async (data: CreateCourtFormSchema) => {
     setIsLoading(true);
-    const response = await fetch("/api/courts", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
+    const response = await courtServices.createCourt({
+      ...data,
+      isActive,
     });
-    if (!response?.ok) {
-      toast.error("Gagal menambahkan lapangan. Silakan coba lagi.");
-    } else {
-      toast.success("Berhasil menambahkan lapangan.");
+    console.log(response);
+    if (response.data.status === 201) {
+      toast.success(response.data.message || "Lapangan berhasil ditambahkan");
       form.reset();
       setIsOpen(false);
+    } else if (response.data.status === 401) {
+      toast.error(response.data.message || "Unauthorized");
+    } else if (response.data.status === 403) {
+      toast.error(response.data.message || "Forbidden");
+    } else {
+      toast.error(
+        response.data.message || "Terjadi kesalahan saat menambahkan lapangan"
+      );
     }
+
     setIsLoading(false);
   });
 

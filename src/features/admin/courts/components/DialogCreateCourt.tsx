@@ -1,7 +1,11 @@
 "use client";
 import SubmitLoadingButton from "@/components/common/SubmitLoadingButton";
 import { Button } from "@/components/ui/button";
-import { DialogContent, DialogTitle } from "@/components/ui/dialog";
+import {
+  DialogContent,
+  DialogDescription,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import {
   Field,
   FieldError,
@@ -34,6 +38,7 @@ const DialogCreateCourt = ({
   return (
     <DialogContent className="max-w-[425px]">
       <DialogTitle>Formulir Tambah Lapangan</DialogTitle>
+      <DialogDescription />
       <form onSubmit={onSubmit}>
         <FieldGroup>
           <Controller

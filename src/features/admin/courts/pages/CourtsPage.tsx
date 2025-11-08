@@ -3,10 +3,24 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import { PlusCircleIcon } from "lucide-react";
 import DialogCreateCourt from "../components/DialogCreateCourt";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import courtServices from "../services/court";
+import { Court } from "@/generated/prisma/client";
 
 const CourtsPage = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [courts, setCourts] = useState<Court[]>([]);
+
+  useEffect(() => {
+    const fetchCourts = async () => {
+      const res = await courtServices.getAllCourts();
+      setCourts(res.data.data);
+    };
+    fetchCourts();
+  }, []);
+
+  console.log(courts);
+
   return (
     <div className="flex flex-col gap-4 sm:gap-6 lg:gap-8 w-full">
       <div className="flex items-center justify-between">
