@@ -71,8 +71,8 @@ const DialogCourt = ({
             : "Formulir Ubah Lapangan"}
         </DialogTitle>
         <DialogDescription />
-        <form onSubmit={onSubmit}>
-          <FieldGroup>
+        <form onSubmit={onSubmit} className="max-h-[80vh] overflow-y-auto">
+          <FieldGroup className="">
             <Controller
               name="name"
               control={form.control}

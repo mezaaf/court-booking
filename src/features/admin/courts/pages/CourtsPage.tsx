@@ -54,7 +54,7 @@ const CourtsPage = () => {
             alt={court.name}
             width={40}
             height={40}
-            className="rounded"
+            className="rounded aspect-video w-12 object-cover object-center"
           />
           {court.name}
         </div>,
