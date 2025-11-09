@@ -4,6 +4,7 @@ import { CourtFormSchema } from "../forms/courtForm";
 const courtServices = {
   getAllCourts: (query: string, page: number, limit: number) =>
     instance.get(`/courts?query=${query}&page=${page}&limit=${limit}`),
+  getAllActiveCourts: () => instance.get("/courts/active"),
   // getCourtById: (id: string) => instance.get(`/courts/${id}`),
   createCourt: (data: CourtFormSchema) => instance.post("/courts", data),
   updateCourt: (id: string, data: CourtFormSchema) =>
