@@ -11,17 +11,15 @@ export async function GET() {
         name: "asc",
       },
     });
-    return NextResponse.json({
+    return NextResponse.json(activeCourts, {
       status: 200,
-      message: "Active courts fetched successfully",
-      data: activeCourts,
+      statusText: "Active courts fetched successfully",
     });
   } catch (error) {
     console.error("Error fetching active courts: ", error);
-    return NextResponse.json({
+    return NextResponse.json(null, {
       status: 500,
-      message: "Error fetching active courts",
-      data: null,
+      statusText: "Error fetching active courts",
     });
   }
 }

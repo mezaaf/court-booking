@@ -9,7 +9,10 @@ const CourtSection = () => {
     queryKey: ["ActiveCourts"],
     queryFn: async () => {
       const res = await courtServices.getAllActiveCourts();
-      if (res.data.status === 200) return res.data.data as Court[];
+      if (res.status !== 200) {
+        throw new Error(res.statusText);
+      }
+      return res.data as Court[];
     },
   });
 

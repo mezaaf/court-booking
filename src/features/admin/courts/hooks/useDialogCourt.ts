@@ -40,34 +40,34 @@ export const useDialogCourt = ({
     setIsLoading(true);
     if (mode === "create") {
       const response = await courtServices.createCourt(data);
-      if (response.data.status === 201) {
-        toast.success(response.data.message || "Lapangan berhasil ditambahkan");
+      if (response.status === 201) {
+        toast.success(response.statusText || "Lapangan berhasil ditambahkan");
         form.reset();
         setIsOpen(false);
         refetchCourts();
-      } else if (response.data.status === 401) {
-        toast.error(response.data.message || "Unauthorized");
-      } else if (response.data.status === 403) {
-        toast.error(response.data.message || "Forbidden");
+      } else if (response.status === 401) {
+        toast.error(response.statusText || "Unauthorized");
+      } else if (response.status === 403) {
+        toast.error(response.statusText || "Forbidden");
       } else {
         toast.error(
-          response.data.message || "Terjadi kesalahan saat menambahkan lapangan"
+          response.statusText || "Terjadi kesalahan saat menambahkan lapangan"
         );
       }
     } else {
       const response = await courtServices.updateCourt(courtId as string, data);
-      if (response.data.status === 200) {
-        toast.success(response.data.message || "Lapangan berhasil diubah");
+      if (response.status === 200) {
+        toast.success(response.statusText || "Lapangan berhasil diubah");
         form.reset(data);
         setIsOpen(false);
         refetchCourts();
-      } else if (response.data.status === 401) {
-        toast.error(response.data.message || "Unauthorized");
-      } else if (response.data.status === 403) {
-        toast.error(response.data.message || "Forbidden");
+      } else if (response.status === 401) {
+        toast.error(response.statusText || "Unauthorized");
+      } else if (response.status === 403) {
+        toast.error(response.statusText || "Forbidden");
       } else {
         toast.error(
-          response.data.message || "Terjadi kesalahan saat menambahkan lapangan"
+          response.statusText || "Terjadi kesalahan saat menambahkan lapangan"
         );
       }
     }

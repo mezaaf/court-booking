@@ -22,10 +22,10 @@ export const useDialogDeleteCourt = (
       toast.error("Nama lapangan tidak sesuai.");
     } else {
       const res = await courtServices.deleteCourt(courtId);
-      if (res.data.status !== 200) {
-        toast.error("Gagal menghapus lapangan.");
+      if (res.status !== 200) {
+        toast.error("Gagal", { description: res.statusText });
       } else {
-        toast.success("Lapangan berhasil dihapus.");
+        toast.success("Berhasil", { description: res.statusText });
         refetch();
         setOpen(false);
       }

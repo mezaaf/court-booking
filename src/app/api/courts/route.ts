@@ -34,19 +34,21 @@ export async function GET(req: NextRequest) {
         take: limit,
       }),
     ]);
-    return NextResponse.json({
-      status: 200,
-      message: "Courts fetched successfully",
-      total,
-      data: courts,
-    });
+    return NextResponse.json(
+      {
+        courts,
+        total,
+      },
+      {
+        status: 200,
+        statusText: "Courts fetched successfully",
+      }
+    );
   } catch (error) {
     console.error("Error fetching courts: ", error);
-    return NextResponse.json({
+    return NextResponse.json(null, {
       status: 500,
-      message: "Error fetching courts",
-      total: 0,
-      data: null,
+      statusText: "Error fetching courts",
     });
   }
 }
@@ -59,24 +61,22 @@ export async function POST(req: Request) {
   const session = await auth.api.getSession({ headers });
 
   if (!session) {
-    return NextResponse.json({
+    return NextResponse.json(null, {
       status: 401,
-      message: "Unauthorized",
-      data: null,
+      statusText: "Unauthorized",
     });
   }
 
   if (session.user.role !== "admin") {
-    return NextResponse.json({
+    return NextResponse.json(null, {
       status: 403,
-      message: "Forbidden",
-      data: null,
+      statusText: "Forbidden",
     });
   }
 
   const data = await req.json();
   try {
-    const court = await prisma.court.create({
+    await prisma.court.create({
       data: {
         name: data.name,
         description: data.description === "" ? null : data.description,
@@ -85,17 +85,15 @@ export async function POST(req: Request) {
         isActive: data.isActive ?? true,
       },
     });
-    return NextResponse.json({
+    return NextResponse.json(null, {
       status: 201,
-      message: "Court created successfully",
-      data: court,
+      statusText: "Court created successfully",
     });
   } catch (error) {
     console.error("Error creating court: ", error);
-    return NextResponse.json({
+    return NextResponse.json(null, {
       status: 500,
-      message: "Error creating court",
-      data: null,
+      statusText: "Error creating court",
     });
   }
 }

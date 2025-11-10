@@ -10,8 +10,14 @@ export async function GET(
     where: { id: (await params).id },
   });
   if (!court)
-    return NextResponse.json({ error: "Court not found" }, { status: 404 });
-  return NextResponse.json(court);
+    return NextResponse.json(null, {
+      status: 404,
+      statusText: "Court not found",
+    });
+  return NextResponse.json(court, {
+    status: 200,
+    statusText: "Court fetched successfully",
+  });
 }
 
 export async function PUT(
@@ -25,11 +31,17 @@ export async function PUT(
   const session = await auth.api.getSession({ headers });
 
   if (!session) {
-    return NextResponse.json({ status: 401, message: "Unauthorized" });
+    return NextResponse.json(null, {
+      status: 401,
+      statusText: "Unauthorized",
+    });
   }
 
   if (session.user.role !== "admin") {
-    return NextResponse.json({ status: 403, message: "Forbidden" });
+    return NextResponse.json(null, {
+      status: 403,
+      statusText: "Forbidden",
+    });
   }
 
   try {
@@ -44,15 +56,15 @@ export async function PUT(
         isActive: data.isActive ?? true,
       },
     });
-    return NextResponse.json({
+    return NextResponse.json(null, {
       status: 200,
-      message: "Court updated successfully",
+      statusText: "Court updated successfully",
     });
   } catch (error) {
     console.error("Error updating court:", error);
-    return NextResponse.json({
+    return NextResponse.json(null, {
       status: 500,
-      message: "Error updating court",
+      statusText: "Error updating court",
     });
   }
 }
@@ -68,30 +80,30 @@ export async function DELETE(
   const session = await auth.api.getSession({ headers });
 
   if (!session) {
-    return NextResponse.json({
+    return NextResponse.json(null, {
       status: 401,
-      message: "Unauthorized",
+      statusText: "Unauthorized",
     });
   }
   if (session.user.role !== "admin") {
-    return NextResponse.json({
+    return NextResponse.json(null, {
       status: 403,
-      message: "Forbidden",
+      statusText: "Forbidden",
     });
   }
   try {
     await prisma.court.delete({
       where: { id: (await params).id },
     });
-    return NextResponse.json({
+    return NextResponse.json(null, {
       status: 200,
-      message: "Court deleted successfully",
+      statusText: "Court deleted successfully",
     });
   } catch (error) {
     console.error("Error deleting court:", error);
-    return NextResponse.json({
+    return NextResponse.json(null, {
       status: 500,
-      message: "Error deleting court",
+      statusText: "Error deleting court",
     });
   }
 }

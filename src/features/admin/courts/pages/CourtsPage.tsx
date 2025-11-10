@@ -34,14 +34,14 @@ const CourtsPage = () => {
         currentPage,
         currentLimit
       );
-      if (res.data.status !== 200) {
-        throw new Error(res.data.message);
+      if (res.status !== 200) {
+        throw new Error(res.statusText);
       }
       return res;
     },
   });
 
-  const courts = courtsResponse?.data.data as Court[];
+  const courts = courtsResponse?.data.courts as Court[];
   const total = courtsResponse?.data.total as number;
 
   const filteredData = useMemo(() => {
@@ -97,7 +97,6 @@ const CourtsPage = () => {
           <DialogCourt mode="create" refetchCourts={refetchCourts} />
         </div>
       </div>
-      {isLoading && <div>Loading...</div>}
       <DataTable
         header={COURT_TABLE_HEADER}
         isLoading={isLoading}
