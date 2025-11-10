@@ -93,15 +93,16 @@ const DialogSchedule = ({
     setIsLoading(false);
   });
 
-  const { data: courts } = useQuery({
-    queryKey: ["courts"],
+  const { data: courts = [], isLoading: isCourtsLoading } = useQuery({
+    queryKey: ["courts-list-for-schedule-dialog", isOpen],
     queryFn: async () => {
       const res = await courtServices.getAllCourts("", 1, 100);
-      if (res.data.status !== 200) {
-        throw new Error(res.data.message);
+      if (res.status !== 200) {
+        throw new Error(res.statusText);
       }
-      return res.data.data;
+      return res.data.courts;
     },
+    enabled: isOpen,
   });
 
   return (
@@ -140,11 +141,17 @@ const DialogSchedule = ({
                       <SelectValue placeholder="Pilih lapangan" />
                     </SelectTrigger>
                     <SelectContent>
-                      {courts.map((court: { id: string; name: string }) => (
-                        <SelectItem key={court.id} value={court.id}>
-                          {court.name}
+                      {isCourtsLoading ? (
+                        <SelectItem disabled value="loading">
+                          Memuat...
                         </SelectItem>
-                      ))}
+                      ) : (
+                        courts.map((court: { id: string; name: string }) => (
+                          <SelectItem key={court.id} value={court.id}>
+                            {court.name}
+                          </SelectItem>
+                        ))
+                      )}
                     </SelectContent>
                   </Select>
                   {fieldState.invalid && (

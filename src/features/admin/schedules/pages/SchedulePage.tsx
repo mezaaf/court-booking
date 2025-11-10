@@ -1,44 +1,27 @@
 "use client";
 
 import DataTable from "@/components/common/DataTable";
-import useDataTable from "@/hooks/useDataTable";
-import { Schedule } from "@/types/schedule";
-import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import { useMemo } from "react";
+import DialogDeleteSchedule from "../components/DialogDeleteSchedule";
 import DialogSchedule from "../components/DialogSchedule";
 import {
   DAY_OF_WEEK_LABELS,
   SCHEDULE_TABLE_HEADER,
 } from "../constants/scheduleConstant";
-import scheduleService from "../services/schedule";
-import DialogDeleteSchedule from "../components/DialogDeleteSchedule";
+import { useSchedulePage } from "../hooks/useSchedulePage";
 
 const SchedulePage = () => {
-  const { currentPage, currentLimit, handlePageChange, handleLimitChange } =
-    useDataTable();
-
   const {
-    data: scheduleResponse,
+    schedules,
     isLoading,
-    refetch: refetchSchedules,
-  } = useQuery({
-    queryKey: ["schedules", currentPage, currentLimit],
-    queryFn: async () => {
-      const res = await scheduleService.getAllschedules(
-        currentPage,
-        currentLimit
-      );
-      if (res.status !== 200) {
-        throw new Error(res.statusText);
-      }
-      return res;
-    },
-  });
-
-  const schedules = scheduleResponse?.data.schedules as Schedule[];
-  const total = scheduleResponse?.data.total;
-
+    refetchSchedules,
+    currentPage,
+    currentLimit,
+    total,
+    handlePageChange,
+    handleLimitChange,
+  } = useSchedulePage();
   const filteredData = useMemo(() => {
     return (schedules || []).map((schedule, index) => {
       return [
@@ -83,6 +66,7 @@ const SchedulePage = () => {
       ];
     });
   }, [currentLimit, currentPage, refetchSchedules, schedules]);
+
   return (
     <div className="flex flex-col gap-4 sm:gap-6 lg:gap-8 w-full">
       <div className="flex items-center justify-between">
@@ -91,7 +75,6 @@ const SchedulePage = () => {
           <DialogSchedule mode="create" refetchSchedules={refetchSchedules} />
         </div>
       </div>
-      {isLoading && <div>Loading...</div>}
       <DataTable
         header={SCHEDULE_TABLE_HEADER}
         isLoading={isLoading}

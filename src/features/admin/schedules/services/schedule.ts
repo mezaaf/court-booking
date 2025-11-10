@@ -2,7 +2,7 @@ import instance from "@/lib/axios/instance";
 import { ScheduleFormSchema } from "../forms/scheduleForm";
 
 const scheduleService = {
-  getAllschedules: async (page: number, limit: number) => {
+  getAllSchedules: async (page: number, limit: number) => {
     return instance.get(`/schedules?page=${page}&limit=${limit}`);
   },
   createSchedule: async (data: ScheduleFormSchema) => {

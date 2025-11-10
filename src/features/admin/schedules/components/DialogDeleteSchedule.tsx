@@ -11,9 +11,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { Loader, OctagonAlert, Trash2Icon } from "lucide-react";
-import { useState } from "react";
-import { toast } from "sonner";
-import scheduleService from "../services/schedule";
+import { useDialogDeleteSchedule } from "../hooks/useDialogDeleteSchedule";
 
 const DialogDeleteSchedule = ({
   scheduleId,
@@ -22,22 +20,10 @@ const DialogDeleteSchedule = ({
   scheduleId: string;
   refetch: () => void;
 }) => {
-  const [open, setOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-
-  const handleDelete = async () => {
-    setIsLoading(true);
-    const res = await scheduleService.deleteSchedule(scheduleId);
-    if (res.status !== 200) {
-      toast.error("Gagal", { description: res.statusText });
-    } else {
-      toast.success("Berhasil", { description: res.statusText });
-      refetch();
-      setOpen(false);
-    }
-    setIsLoading(false);
-  };
-
+  const { open, setOpen, isLoading, handleDelete } = useDialogDeleteSchedule(
+    scheduleId,
+    refetch
+  );
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
       <AlertDialogTrigger asChild>
