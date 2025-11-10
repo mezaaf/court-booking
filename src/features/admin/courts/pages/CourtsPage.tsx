@@ -1,49 +1,26 @@
 "use client";
 import DataTable from "@/components/common/DataTable";
 import { Input } from "@/components/ui/input";
-import { Court } from "@/generated/prisma/client";
-import useDataTable from "@/hooks/useDataTable";
 import { convertIDR } from "@/lib/utils";
-import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import { useMemo } from "react";
 import DialogCourt from "../components/DialogCourt";
 import DialogDeleteCourt from "../components/DialogDeleteCourt";
 import { COURT_TABLE_HEADER } from "../constant/courtConstant";
-import courtServices from "../services/court";
+import { useCourtPage } from "../hooks/useCourtPage";
 
 const CourtsPage = () => {
   const {
+    courts,
+    total,
+    isLoading,
+    refetchCourts,
     currentPage,
     currentLimit,
-    currentSearch,
     handlePageChange,
     handleLimitChange,
     handleSearchChange,
-  } = useDataTable();
-
-  const {
-    data: courtsResponse,
-    isLoading,
-    refetch: refetchCourts,
-  } = useQuery({
-    queryKey: ["courts", currentSearch, currentPage, currentLimit],
-    queryFn: async () => {
-      const res = await courtServices.getAllCourts(
-        currentSearch,
-        currentPage,
-        currentLimit
-      );
-      if (res.status !== 200) {
-        throw new Error(res.statusText);
-      }
-      return res;
-    },
-  });
-
-  const courts = courtsResponse?.data.courts as Court[];
-  const total = courtsResponse?.data.total as number;
-
+  } = useCourtPage();
   const filteredData = useMemo(() => {
     return (courts || []).map((court, index) => {
       return [
