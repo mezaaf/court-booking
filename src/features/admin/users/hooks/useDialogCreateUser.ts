@@ -1,9 +1,9 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { CreateUserFormSchema, createUserFormSchema } from "../forms/userForm";
-import { authClient } from "@/server/auth/auth-client";
 import { toast } from "sonner";
+import { CreateUserFormSchema, createUserFormSchema } from "../forms/userForm";
+import userService from "../services/user";
 
 export const useDialogCreateUser = (refetchUsers: () => void) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -20,16 +20,11 @@ export const useDialogCreateUser = (refetchUsers: () => void) => {
 
   const onSubmit = form.handleSubmit(async (data: CreateUserFormSchema) => {
     setIsLoading(true);
-    const { error } = await authClient.admin.createUser({
-      name: data.name,
-      email: data.email,
-      password: data.password,
-      role: data.role === true ? "admin" : "user",
-    });
-    if (error) {
-      toast.error(error.message);
+    const res = await userService.createUser(data);
+    if (res.status !== 201) {
+      toast.error("Gagal", { description: res.statusText });
     } else {
-      toast.success("User created successfully");
+      toast.success("Berhasil", { description: res.statusText });
       form.reset();
       refetchUsers();
       setIsOpen(false);

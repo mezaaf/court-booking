@@ -1,6 +1,6 @@
-import { authClient } from "@/server/auth/auth-client";
 import { useState } from "react";
 import { toast } from "sonner";
+import userService from "../services/user";
 
 export const useDialogDeleteUser = (
   userId: string,
@@ -21,15 +21,14 @@ export const useDialogDeleteUser = (
     if (!isInputValid) {
       toast.error("Nama pengguna tidak sesuai.");
     } else {
-      const { error } = await authClient.admin.removeUser({
-        userId,
-      });
-      if (error) {
-        toast.error("Gagal menghapus pengguna.");
+      const res = await userService.deleteUser(userId);
+      if (res.status !== 200) {
+        toast.error("Gagal", { description: res.statusText });
       } else {
-        toast.success("Pengguna berhasil dihapus.");
+        toast.success("Berhasil", { description: res.statusText });
         refetch();
         setOpen(false);
+        setInputValue("");
       }
     }
     setIsLoading(false);

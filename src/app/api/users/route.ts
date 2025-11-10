@@ -1,6 +1,9 @@
+import { CreateUserFormSchema } from "@/features/admin/users/forms/userForm";
 import { Prisma } from "@/generated/prisma/client";
+import { getBetterAuthStatusCode } from "@/lib/betterAuth";
 import { auth } from "@/server/auth/auth";
 import prisma from "@/server/prisma";
+import { APIError } from "better-auth";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
@@ -75,5 +78,58 @@ export async function GET(request: NextRequest) {
       total: 0,
       data: null,
     });
+  }
+}
+
+export async function POST(req: NextRequest) {
+  const headers = {
+    authorization: req.headers.get("authorization") ?? "",
+    cookie: req.headers.get("cookie") ?? "",
+  };
+  const session = await auth.api.getSession({ headers });
+
+  if (!session) {
+    return NextResponse.json(null, {
+      status: 400,
+      statusText: "Bad Request",
+    });
+  }
+
+  if (session.user.role !== "admin") {
+    return NextResponse.json(null, {
+      status: 403,
+      statusText: "Forbidden",
+    });
+  }
+
+  const data: CreateUserFormSchema = await req.json();
+
+  try {
+    await auth.api.createUser({
+      body: {
+        name: data.name,
+        email: data.email,
+        password: data.password,
+        role: data.role === true ? "admin" : "user",
+      },
+    });
+    return NextResponse.json(null, {
+      status: 201,
+      statusText: "Created",
+    });
+  } catch (error) {
+    if (error instanceof APIError) {
+      const code = getBetterAuthStatusCode(error.status);
+      return NextResponse.json(null, {
+        status: code,
+        statusText: error.message,
+      });
+    } else {
+      console.log("Error creating user: ", error);
+      return NextResponse.json(null, {
+        status: 500,
+        statusText: "Internal Server Error",
+      });
+    }
   }
 }
