@@ -22,6 +22,7 @@ model User {
   updatedAt     DateTime  @default(now()) @updatedAt
   sessions      Session[]
   accounts      Account[]
+  bookings      Booking[]
 
   @@unique([email])
 }
@@ -76,6 +77,7 @@ model Court {
   createdAt    DateTime   @default(now())
   updatedAt    DateTime   @default(now()) @updatedAt
   schedules    Schedule[]
+  bookings     Booking[]
 }
 
 model Schedule {
@@ -89,4 +91,28 @@ model Schedule {
   note      String?
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
+}
+
+model BankAccount {
+  id                String   @id @default(uuid())
+  bankName          String
+  accountNumber     String
+  accountHolderName String
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @default(now()) @updatedAt
+}
+
+model Booking {
+  id         String   @id @default(uuid())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  courtId    String
+  court      Court    @relation(fields: [courtId], references: [id], onDelete: Cascade)
+  date       DateTime
+  startTime  String
+  endTime    String
+  totalPrice Int
+  status     String   @default("pending")
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @default(now()) @updatedAt
 }
