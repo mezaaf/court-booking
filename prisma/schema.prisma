@@ -103,16 +103,24 @@ model BankAccount {
 }
 
 model Booking {
-  id         String   @id @default(uuid())
+  id         String        @id @default(uuid())
   userId     String
-  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user       User          @relation(fields: [userId], references: [id], onDelete: Cascade)
   courtId    String
-  court      Court    @relation(fields: [courtId], references: [id], onDelete: Cascade)
+  court      Court         @relation(fields: [courtId], references: [id], onDelete: Cascade)
   date       DateTime
   startTime  String
   endTime    String
+  note       String?
   totalPrice Int
-  status     String   @default("pending")
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @default(now()) @updatedAt
+  status     BookingStatus @default(PENDING)
+  createdAt  DateTime      @default(now())
+  updatedAt  DateTime      @default(now()) @updatedAt
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+  DONE
 }

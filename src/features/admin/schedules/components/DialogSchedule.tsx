@@ -181,7 +181,6 @@ const DialogSchedule = ({
                           </SelectItem>
                         )
                       )}
-                      <SelectItem value="7">Sabtu</SelectItem>
                     </SelectContent>
                   </Select>
                   {fieldState.invalid && (

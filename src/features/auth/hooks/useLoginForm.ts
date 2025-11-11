@@ -4,8 +4,11 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { loginFormSchema, LoginFormSchema } from "../forms/authSchema";
+import { useSearchParams } from "next/navigation";
 
 export const useLoginForm = () => {
+  const searchParams = useSearchParams();
+  const callbackUrl = searchParams.get("callbackUrl") || "/";
   const [isLoading, setIsLoading] = useState(false);
   const form = useForm<LoginFormSchema>({
     defaultValues: {
@@ -19,6 +22,7 @@ export const useLoginForm = () => {
     const { error } = await authClient.signIn.email({
       email: data.email,
       password: data.password,
+      callbackURL: callbackUrl,
     });
     if (error) {
       toast.error(error.message);

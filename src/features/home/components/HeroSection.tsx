@@ -1,5 +1,7 @@
 import { Card, CardContent } from "@/components/ui/card";
 import HeroBookForm from "./HeroBookForm";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 const HeroSection = () => {
   return (
@@ -13,6 +15,9 @@ const HeroSection = () => {
           dengan membuat pilihan yang lebih cerdas, bukan hanya bekerja lebih
           keras!
         </p>
+        <Button asChild className="bg-sky-700 hover:bg-sky-700/80 w-fit">
+          <Link href="/bookings">Booking Sekarang</Link>
+        </Button>
         <Card className="w-full max-w-3xl">
           <CardContent>
             <HeroBookForm />

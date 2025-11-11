@@ -40,7 +40,7 @@ const Navbar = () => {
           <Link href="/contact" className="text-white font-semibold">
             Contact
           </Link>
-          <Link href="/about" className="text-white font-semibold">
+          <Link href="/bookings" className="text-white font-semibold">
             Booking
           </Link>
           {!session?.user && !isPending ? (

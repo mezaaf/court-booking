@@ -15,11 +15,24 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import courtServices from "@/features/admin/courts/services/court";
+import { Court } from "@/generated/prisma/client";
+import { useQuery } from "@tanstack/react-query";
 import { ChevronDownIcon } from "lucide-react";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 
 const HeroBookForm = () => {
+  const { data: activeCourts } = useQuery({
+    queryKey: ["ActiveCourts"],
+    queryFn: async () => {
+      const res = await courtServices.getAllActiveCourts();
+      if (res.status !== 200) {
+        throw new Error(res.statusText);
+      }
+      return res.data as Court[];
+    },
+  });
   const [open, setOpen] = useState(false);
   const form = useForm();
   return (
@@ -28,7 +41,7 @@ const HeroBookForm = () => {
         <FieldGroup>
           <div className="grid grid-cols-3 gap-4 w-full">
             <Controller
-              name="court"
+              name="courtId"
               control={form.control}
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
@@ -37,9 +50,11 @@ const HeroBookForm = () => {
                       <SelectValue {...field} placeholder="Pilih Lapangan" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="court1">Lapangan 1</SelectItem>
-                      <SelectItem value="court2">Lapangan 2</SelectItem>
-                      <SelectItem value="court3">Lapangan 3</SelectItem>
+                      {(activeCourts || []).map((court) => (
+                        <SelectItem key={court.id} value={court.id}>
+                          {court.name}
+                        </SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
                 </Field>
