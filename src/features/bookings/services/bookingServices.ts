@@ -4,7 +4,7 @@ import { BookingFormSchema } from "../forms/bookingForm";
 export const bookingServices = {
   getAvailableTime: async (id: string, date: string) => {
     return instance.get(
-      `admin/courts/${id}/available-time${date ? `?date=${date}` : ""}`
+      `courts/${id}/available-time${date ? `?date=${date}` : ""}`
     );
   },
   createBooking: async (data: BookingFormSchema) => {
