@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { toast } from "sonner";
-import courtServices from "../services/court";
+import courtServices from "../services/courtServices";
 
 export const useDialogDeleteCourt = (
   courtId: string,

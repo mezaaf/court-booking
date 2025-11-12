@@ -26,12 +26,12 @@ import { useQuery } from "@tanstack/react-query";
 import { Edit2Icon, PlusCircleIcon } from "lucide-react";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import courtServices from "../../courts/services/court";
 import { scheduleFormSchema, ScheduleFormSchema } from "../forms/scheduleForm";
 import { zodResolver } from "@hookform/resolvers/zod";
 import scheduleService from "../services/schedule";
 import { toast } from "sonner";
 import { DAY_OF_WEEK_LABELS } from "../constants/scheduleConstant";
+import courtServices from "../../courts/services/courtServices";
 
 const DialogSchedule = ({
   mode,

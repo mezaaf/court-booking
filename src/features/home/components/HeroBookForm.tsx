@@ -15,7 +15,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import courtServices from "@/features/admin/courts/services/court";
+import courtServices from "@/features/admin/courts/services/courtServices";
 import { Court } from "@/generated/prisma/client";
 import { useQuery } from "@tanstack/react-query";
 import { ChevronDownIcon } from "lucide-react";

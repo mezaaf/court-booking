@@ -3,13 +3,13 @@ import { CreateUserFormSchema } from "../forms/userForm";
 
 const userService = {
   getAllUsers: (query: string, page: number, limit: number) =>
-    instance.get(`/users?query=${query}&page=${page}&limit=${limit}`),
+    instance.get(`/admin/users?query=${query}&page=${page}&limit=${limit}`),
   createUser: (data: CreateUserFormSchema) =>
-    instance.post("/users", data, {
+    instance.post("/admin/users", data, {
       validateStatus: () => true,
     }),
   deleteUser: (userId: string) =>
-    instance.delete(`/users/${userId}`, {
+    instance.delete(`/admin/users/${userId}`, {
       validateStatus: () => true,
     }),
 };

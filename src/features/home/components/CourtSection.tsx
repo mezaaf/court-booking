@@ -1,8 +1,8 @@
 "use client";
 import { useQuery } from "@tanstack/react-query";
 import CourtCard from "./CourtCard";
-import courtServices from "@/features/admin/courts/services/court";
 import { Court } from "@/generated/prisma/client";
+import courtServices from "@/features/admin/courts/services/courtServices";
 
 const CourtSection = () => {
   const { data: activeCourts } = useQuery({

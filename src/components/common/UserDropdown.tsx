@@ -39,12 +39,12 @@ const UserDropdown = ({ user }: { user: User }) => {
         <DropdownMenuLabel>{user.email}</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem asChild className="cursor-pointer">
-          <Link href="/profile">
+          <Link href="/user/profile">
             <UserIcon className="size-4" /> <span>Profile</span>
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem asChild className="cursor-pointer">
-          <Link href="/profile">
+          <Link href="/user/bookings">
             <ClockIcon className="size-4" /> <span>Riwayat Booking</span>
           </Link>
         </DropdownMenuItem>

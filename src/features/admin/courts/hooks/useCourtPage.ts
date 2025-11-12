@@ -1,7 +1,7 @@
 import useDataTable from "@/hooks/useDataTable";
 import { useQuery } from "@tanstack/react-query";
-import courtServices from "../services/court";
 import { Court } from "@/generated/prisma/client";
+import courtServices from "../services/courtServices";
 
 export const useCourtPage = () => {
   const {
