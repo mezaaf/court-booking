@@ -45,6 +45,7 @@ export const useBookingForm = (
       setSelectedDate(null);
       setDate("");
       form.reset();
+      router.push(`/payment?bookingId=${res.data.bookingId}`);
     } else if (res.status === 401) {
       router.push("/login?callbackUrl=/bookings");
     } else {
@@ -52,6 +53,7 @@ export const useBookingForm = (
     }
     setIsLoading(false);
   });
+
   const { data: courts = [], isLoading: isCourtsLoading } = useQuery({
     queryKey: ["courts-list-for-booking"],
     queryFn: async () => {

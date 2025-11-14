@@ -126,8 +126,8 @@ const DialogCourt = ({
               )}
             />
             <Controller
-              control={form.control}
               name="image"
+              control={form.control}
               render={({ fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
                   <FieldLabel>Foto Lapangan</FieldLabel>

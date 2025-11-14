@@ -51,7 +51,7 @@ export async function POST(req: NextRequest) {
         statusText: "Waktu yang dipilih sudah terbooking",
       });
     }
-    await prisma.booking.create({
+    const booking = await prisma.booking.create({
       data: {
         userId: session.user.id,
         courtId: data.courtId,
@@ -63,10 +63,13 @@ export async function POST(req: NextRequest) {
         status: BookingStatus.PENDING,
       },
     });
-    return NextResponse.json(null, {
-      status: 201,
-      statusText: "Booking created successfully",
-    });
+    return NextResponse.json(
+      { bookingId: booking.id },
+      {
+        status: 201,
+        statusText: "Booking created successfully",
+      }
+    );
   } catch (error) {
     if (error instanceof Error) {
       return NextResponse.json(null, {

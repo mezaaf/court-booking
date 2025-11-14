@@ -94,12 +94,13 @@ model Schedule {
 }
 
 model BankAccount {
-  id                String   @id @default(uuid())
+  id                String    @id @default(uuid())
   bankName          String
   accountNumber     String
   accountHolderName String
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @default(now()) @updatedAt
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @default(now()) @updatedAt
+  payments          Payment[]
 }
 
 model Booking {
@@ -116,6 +117,7 @@ model Booking {
   status     BookingStatus @default(PENDING)
   createdAt  DateTime      @default(now())
   updatedAt  DateTime      @default(now()) @updatedAt
+  payments   Payment[]
 }
 
 enum BookingStatus {
@@ -123,4 +125,30 @@ enum BookingStatus {
   CONFIRMED
   CANCELLED
   DONE
+}
+
+model Payment {
+  id             String        @id @default(uuid())
+  bookingId      String
+  booking        Booking       @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  method         PaymentMethod
+  bankAccountId  String?
+  bankAccount    BankAccount?  @relation(fields: [bankAccountId], references: [id], onDelete: SetNull)
+  amount         Int
+  proofOfPayment String?
+  status         PaymentStatus @default(PENDING)
+  note           String?
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @default(now()) @updatedAt
+}
+
+enum PaymentMethod {
+  BANK_TRANSFER
+  CASHLESS
+}
+
+enum PaymentStatus {
+  PENDING
+  CONFIRMED
+  FAILED
 }
