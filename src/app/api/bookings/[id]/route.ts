@@ -20,6 +20,7 @@ export async function GET(
       include: {
         court: true,
         user: true,
+        payments: true,
       },
     });
     return NextResponse.json(booking, {

@@ -32,6 +32,8 @@ export async function GET(req: NextRequest) {
         },
         include: {
           court: true,
+          user: true,
+          payments: true,
         },
         skip: offset,
         take: limit,
