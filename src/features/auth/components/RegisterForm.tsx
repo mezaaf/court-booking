@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
+import SubmitLoadingButton from "@/components/common/SubmitLoadingButton";
 import {
   Card,
   CardContent,
@@ -21,7 +21,7 @@ import { Controller } from "react-hook-form";
 import { useRegisterForm } from "../hooks/useRegisterForm";
 
 const RegisterForm = () => {
-  const { form, onSubmit } = useRegisterForm();
+  const { form, onSubmit, isLoading } = useRegisterForm();
 
   return (
     <div className="w-full max-w-md mx-auto flex flex-col gap-6">
@@ -90,9 +90,12 @@ const RegisterForm = () => {
                 )}
               />
             </FieldGroup>
-            <Button type="submit" className="w-full">
-              Daftar
-            </Button>
+            <SubmitLoadingButton
+              isLoading={isLoading}
+              text="Daftar"
+              loadingText="Mendaftar..."
+              className="w-full"
+            />
           </form>
         </CardContent>
         <CardFooter className="text-center text-sm text-muted-foreground">
