@@ -29,6 +29,17 @@ export async function POST(req: Request) {
       });
     }
 
+    const existingPayment = await prisma.payment.findFirst({
+      where: { bookingId: existingBooking.id },
+    });
+    if (existingPayment) {
+      return NextResponse.json(null, {
+        status: 400,
+        statusText:
+          "Pembayaran untuk booking ini sudah ada dan akan segera dikonfirmasi.",
+      });
+    }
+
     await prisma.payment.create({
       data: {
         bookingId: existingBooking.id,

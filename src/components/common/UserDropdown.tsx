@@ -76,7 +76,7 @@ const SignOutItem = () => {
         description: error.message,
       });
     } else {
-      router.push("/");
+      router.refresh();
     }
   };
   return (

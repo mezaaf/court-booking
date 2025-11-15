@@ -1,12 +1,10 @@
-import { useForm } from "react-hook-form";
-import { registerFormSchema, RegisterFormSchema } from "../forms/authSchema";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { authClient } from "@/server/auth/auth-client";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { useRouter } from "next/navigation";
+import { registerFormSchema, RegisterFormSchema } from "../forms/authSchema";
 
 export const useRegisterForm = () => {
-  const router = useRouter();
   const form = useForm<RegisterFormSchema>({
     defaultValues: {
       name: "",
@@ -32,7 +30,6 @@ export const useRegisterForm = () => {
         toast.success(
           "Berhasil mendaftar! Silakan periksa email Anda untuk verifikasi."
         );
-        router.push("/login");
       }
     } catch (error) {
       console.error("Registration error:", error);
