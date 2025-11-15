@@ -7,7 +7,13 @@ import BankCard from "./BankCard";
 import TransferPaymentForm from "./TransferPaymentForm";
 import { usePaymentDetailCard } from "../hooks/usePaymentDetailCard";
 
-const PaymentDetailCard = ({ bookingId }: { bookingId: string | null }) => {
+const PaymentDetailCard = ({
+  bookingId,
+  paymentStatus,
+}: {
+  bookingId: string | null;
+  paymentStatus: string | null;
+}) => {
   const {
     banks,
     isLoadingBanks,
@@ -15,7 +21,9 @@ const PaymentDetailCard = ({ bookingId }: { bookingId: string | null }) => {
     setOpenForm,
     isLoading,
     handleCashlessPayment,
+    handleAlreadyPaid,
   } = usePaymentDetailCard(bookingId);
+
   return (
     <Card className="w-full">
       <CardHeader className="flex gap-4">
@@ -38,7 +46,9 @@ const PaymentDetailCard = ({ bookingId }: { bookingId: string | null }) => {
               className="bg-green-600 hover:bg-green-600/80"
             />
             <Button
-              onClick={() => setOpenForm(true)}
+              onClick={
+                paymentStatus ? handleAlreadyPaid : () => setOpenForm(!openForm)
+              }
               className="bg-sky-700 hover:bg-sky-700/80"
             >
               <CreditCardIcon /> Transfer

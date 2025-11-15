@@ -2,14 +2,18 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { convertIDR } from "@/lib/utils";
+import { Booking } from "@/types/booking";
 import { format } from "date-fns";
 import { id } from "date-fns/locale";
 import { Calendar, Clock, CreditCard, DollarSign, User } from "lucide-react";
-import { useBookingDetailCard } from "../hooks/useBookingDetailCard";
 
-const BookingDetailCard = ({ bookingId }: { bookingId: string | null }) => {
-  const { bookingDetails, isLoadingBookingDetails } =
-    useBookingDetailCard(bookingId);
+const BookingDetailCard = ({
+  bookingDetails,
+  isLoadingBookingDetails,
+}: {
+  bookingDetails: Booking | undefined;
+  isLoadingBookingDetails: boolean;
+}) => {
   return (
     <Card className="w-full max-w-sm">
       <CardHeader className="pb-0">

@@ -35,6 +35,12 @@ export const usePaymentDetailCard = (bookingId: string | null) => {
     setIsLoading(false);
   };
 
+  const handleAlreadyPaid = () => {
+    toast.error("Pembayaran sudah dilakukan sebelumnya.", {
+      description: "Silakan cek riwayat booking Anda.",
+    });
+  };
+
   return {
     banks,
     isLoadingBanks,
@@ -42,5 +48,6 @@ export const usePaymentDetailCard = (bookingId: string | null) => {
     setOpenForm,
     isLoading,
     handleCashlessPayment,
+    handleAlreadyPaid,
   };
 };
