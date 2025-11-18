@@ -1,7 +1,7 @@
+import { BankFormSchema } from "@/features/admin/banks/forms/bankForm";
 import instance from "@/lib/axios/instance";
-import { BankFormSchema } from "../forms/bankForm";
 
-export const bankServices = {
+export const adminBankServices = {
   getBanks: async (query: string, page: number, limit: number) => {
     return instance.get(
       `/admin/banks?query=${query}&page=${page}&limit=${limit}`

@@ -39,15 +39,8 @@ import {
   EyeIcon,
   User,
 } from "lucide-react";
-import { useState } from "react";
-import { Controller, useForm } from "react-hook-form";
-import {
-  bookingStatusFormSchema,
-  BookingStatusFormSchema,
-} from "../forms/bookingStatusForm";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { adminBookingServices } from "../services/adminBookingServices";
-import { toast } from "sonner";
+import { Controller } from "react-hook-form";
+import { useDialogBookingDetail } from "../hooks/useDialogBookingDetail";
 
 const DialogBookingDetail = ({
   booking,
@@ -56,31 +49,8 @@ const DialogBookingDetail = ({
   booking: Booking;
   refetchBooking: () => void;
 }) => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [isOpen, setIsOpen] = useState(false);
-  const form = useForm<BookingStatusFormSchema>({
-    resolver: zodResolver(bookingStatusFormSchema),
-    defaultValues: {
-      status: booking.status,
-    },
-  });
-
-  const onSubmit = form.handleSubmit(async (data) => {
-    setIsLoading(true);
-    const res = await adminBookingServices.updateBookingStatus(
-      booking.id,
-      data
-    );
-    if (res.status === 200) {
-      toast.success("Berhasil", { description: res.statusText });
-      form.reset(data);
-      refetchBooking();
-      setIsOpen(false);
-    } else {
-      toast.error("Gagal", { description: res.statusText });
-    }
-    setIsLoading(false);
-  });
+  const { isOpen, setIsOpen, form, isLoading, onSubmit } =
+    useDialogBookingDetail(booking, refetchBooking);
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>

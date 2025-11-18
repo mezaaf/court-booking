@@ -7,7 +7,7 @@ import { bookingServices } from "../services/bookingServices";
 import { toast } from "sonner";
 import { useQuery } from "@tanstack/react-query";
 import { formatDateToLocalYMD } from "@/lib/utils";
-import courtServices from "@/features/admin/courts/services/courtServices";
+import { courtServices } from "@/services/public/courtServices";
 
 export const useBookingForm = (
   setOpenTime: (openTime: string) => void,

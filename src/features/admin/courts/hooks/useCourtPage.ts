@@ -1,7 +1,7 @@
 import useDataTable from "@/hooks/useDataTable";
 import { useQuery } from "@tanstack/react-query";
 import { Court } from "@/generated/prisma/client";
-import courtServices from "../services/courtServices";
+import { adminCourtServices } from "@/services/admin/adminCourtServices";
 
 export const useCourtPage = () => {
   const {
@@ -20,7 +20,7 @@ export const useCourtPage = () => {
   } = useQuery({
     queryKey: ["courts", currentSearch, currentPage, currentLimit],
     queryFn: async () => {
-      const res = await courtServices.getAllCourts(
+      const res = await adminCourtServices.getAllCourts(
         currentSearch,
         currentPage,
         currentLimit

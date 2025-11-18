@@ -1,7 +1,7 @@
 import useDataTable from "@/hooks/useDataTable";
 import { useQuery } from "@tanstack/react-query";
-import { bankServices } from "../services/bankServices";
 import { BankAccount } from "@/generated/prisma/client";
+import { adminBankServices } from "@/services/admin/adminBankServices";
 
 export const useBankPage = () => {
   const {
@@ -18,7 +18,7 @@ export const useBankPage = () => {
   } = useQuery({
     queryKey: ["banks", currentSearch, currentPage, currentLimit],
     queryFn: async () => {
-      const res = await bankServices.getBanks(
+      const res = await adminBankServices.getBanks(
         currentSearch,
         currentPage,
         currentLimit

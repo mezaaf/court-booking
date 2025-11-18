@@ -15,8 +15,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import courtServices from "@/features/admin/courts/services/courtServices";
 import { Court } from "@/generated/prisma/client";
+import { courtServices } from "@/services/public/courtServices";
 import { useQuery } from "@tanstack/react-query";
 import { ChevronDownIcon } from "lucide-react";
 import { useState } from "react";
@@ -24,9 +24,9 @@ import { Controller, useForm } from "react-hook-form";
 
 const HeroBookForm = () => {
   const { data: activeCourts } = useQuery({
-    queryKey: ["ActiveCourts"],
+    queryKey: ["allActiveCourts"],
     queryFn: async () => {
-      const res = await courtServices.getAllActiveCourts();
+      const res = await courtServices.getAllActiveCourts(1, 100);
       if (res.status !== 200) {
         throw new Error(res.statusText);
       }

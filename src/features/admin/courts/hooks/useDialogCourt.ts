@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { courtFormSchema, CourtFormSchema } from "../forms/courtForm";
-import courtServices from "../services/courtServices";
+import { adminCourtServices } from "@/services/admin/adminCourtServices";
 
 export const useDialogCourt = ({
   mode,
@@ -39,7 +39,7 @@ export const useDialogCourt = ({
   const onSubmit = form.handleSubmit(async (data: CourtFormSchema) => {
     setIsLoading(true);
     if (mode === "create") {
-      const response = await courtServices.createCourt(data);
+      const response = await adminCourtServices.createCourt(data);
       if (response.status === 201) {
         toast.success(response.statusText || "Lapangan berhasil ditambahkan");
         form.reset();
@@ -55,7 +55,10 @@ export const useDialogCourt = ({
         );
       }
     } else {
-      const response = await courtServices.updateCourt(courtId as string, data);
+      const response = await adminCourtServices.updateCourt(
+        courtId as string,
+        data
+      );
       if (response.status === 200) {
         toast.success(response.statusText || "Lapangan berhasil diubah");
         form.reset(data);

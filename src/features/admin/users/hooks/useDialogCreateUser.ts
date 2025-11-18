@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { CreateUserFormSchema, createUserFormSchema } from "../forms/userForm";
-import userService from "../services/user";
+import { adminUserServices } from "@/services/admin/adminUserServices";
 
 export const useDialogCreateUser = (refetchUsers: () => void) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -20,7 +20,7 @@ export const useDialogCreateUser = (refetchUsers: () => void) => {
 
   const onSubmit = form.handleSubmit(async (data: CreateUserFormSchema) => {
     setIsLoading(true);
-    const res = await userService.createUser(data);
+    const res = await adminUserServices.createUser(data);
     if (res.status !== 201) {
       toast.error("Gagal", { description: res.statusText });
     } else {

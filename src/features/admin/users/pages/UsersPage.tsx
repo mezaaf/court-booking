@@ -2,47 +2,25 @@
 
 import DataTable from "@/components/common/DataTable";
 import { Input } from "@/components/ui/input";
-import { User } from "@/generated/prisma/client";
-import useDataTable from "@/hooks/useDataTable";
-import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import { useMemo } from "react";
 import DialogCreateUser from "../components/DialogCreateUser";
 import DialogDeleteUser from "../components/DialogDeleteUser";
 import { USER_TABLE_HEADER } from "../constants/userConstant";
-import userService from "../services/user";
+import { useUsersPage } from "../hooks/useUsersPage";
 
 const UsersPage = () => {
   const {
+    users,
+    total,
+    isLoading,
     currentPage,
     currentLimit,
-    currentSearch,
     handlePageChange,
     handleLimitChange,
     handleSearchChange,
-  } = useDataTable();
-  const {
-    data: usersResponse,
-    isLoading,
-    refetch: refetchUsers,
-  } = useQuery({
-    queryKey: ["users", currentSearch, currentPage, currentLimit],
-    queryFn: async () => {
-      const res = await userService.getAllUsers(
-        currentSearch,
-        currentPage,
-        currentLimit
-      );
-      if (res.data.status !== 200) {
-        throw new Error(res.data.message);
-      }
-      return res;
-    },
-  });
-
-  const users = usersResponse?.data.data as User[];
-  const total = usersResponse?.data.total;
-
+    refetchUsers,
+  } = useUsersPage();
   const filteredData = useMemo(() => {
     return (users || []).map((user, index) => {
       return [
@@ -97,7 +75,6 @@ const UsersPage = () => {
           <DialogCreateUser refetchUsers={refetchUsers} />
         </div>
       </div>
-      {isLoading && <div>Loading...</div>}
       <DataTable
         header={USER_TABLE_HEADER}
         isLoading={isLoading}

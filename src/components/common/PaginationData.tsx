@@ -17,22 +17,18 @@ import PaginationDataTable from "./PaginationDataTable";
 const PaginationData = ({
   isLimit = false,
   total,
+  refetch,
 }: {
   isLimit?: boolean;
   total: number;
+  refetch?: () => void;
 }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const parseNumberParam = (value: string | null, fallback: number) => {
-    const n = Number(value);
-    return isNaN(n) || n <= 0 ? fallback : n;
-  };
-  const currentPage = parseNumberParam(searchParams.get("page"), 1);
-  const currentLimit = parseNumberParam(
-    searchParams.get("limit"),
-    LIMIT_LIST[0]
-  );
+  const currentPage = Number(searchParams.get("page")) || 1;
+  const currentLimit = Number(searchParams.get("limit")) || LIMIT_LIST[0];
+  console.log(currentLimit);
   const totalPages = Math.ceil(total / currentLimit);
 
   const updateUrlParams = (params: { page?: number; limit?: number }) => {
@@ -43,7 +39,10 @@ const PaginationData = ({
     if (params.limit !== undefined) {
       newParams.set("limit", params.limit.toString());
     }
-    router.replace(`?${newParams.toString()}`);
+    router.replace(`?${newParams.toString()}`, { scroll: false });
+    if (refetch) {
+      refetch();
+    }
   };
   return (
     <div className="my-2 flex items-center justify-between">
@@ -74,7 +73,7 @@ const PaginationData = ({
       )}
       {totalPages > 1 && (
         <PaginationDataTable
-          totalPages={total}
+          totalPages={totalPages}
           currentPage={currentPage}
           onPageChange={(page) => updateUrlParams({ page })}
         />

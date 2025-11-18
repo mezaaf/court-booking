@@ -2,8 +2,8 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { bankFormSchema, BankFormSchema } from "../forms/bankForm";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { bankServices } from "../services/bankServices";
 import { toast } from "sonner";
+import { adminBankServices } from "@/services/admin/adminBankServices";
 
 export const useBankDialog = ({
   mode,
@@ -29,7 +29,7 @@ export const useBankDialog = ({
   const onSubmit = form.handleSubmit(async (data: BankFormSchema) => {
     setIsLoading(true);
     if (mode === "create") {
-      const res = await bankServices.createBank(data);
+      const res = await adminBankServices.createBank(data);
       if (res.status === 201) {
         toast.success("Berhasil", { description: res.statusText });
         refetchBanks();
@@ -39,7 +39,7 @@ export const useBankDialog = ({
         toast.error("Gagal", { description: res.statusText });
       }
     } else {
-      const res = await bankServices.updateBank(bankId!, data);
+      const res = await adminBankServices.updateBank(bankId!, data);
       if (res.status === 200) {
         toast.success("Berhasil", { description: res.statusText });
         form.reset(data);

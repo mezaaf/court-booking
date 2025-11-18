@@ -1,6 +1,6 @@
+import { adminCourtServices } from "@/services/admin/adminCourtServices";
 import { useState } from "react";
 import { toast } from "sonner";
-import courtServices from "../services/courtServices";
 
 export const useDialogDeleteCourt = (
   courtId: string,
@@ -21,7 +21,7 @@ export const useDialogDeleteCourt = (
     if (!isInputValid) {
       toast.error("Nama lapangan tidak sesuai.");
     } else {
-      const res = await courtServices.deleteCourt(courtId);
+      const res = await adminCourtServices.deleteCourt(courtId);
       if (res.status !== 200) {
         toast.error("Gagal", { description: res.statusText });
       } else {

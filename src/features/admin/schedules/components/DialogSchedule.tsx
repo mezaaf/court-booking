@@ -31,8 +31,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import scheduleService from "../services/schedule";
 import { toast } from "sonner";
 import { DAY_OF_WEEK_LABELS } from "../constants/scheduleConstant";
-import courtServices from "../../courts/services/courtServices";
-
+import { adminCourtServices } from "@/services/admin/adminCourtServices";
 const DialogSchedule = ({
   mode,
   refetchSchedules,
@@ -96,7 +95,7 @@ const DialogSchedule = ({
   const { data: courts = [], isLoading: isCourtsLoading } = useQuery({
     queryKey: ["courts-list-for-schedule-dialog", isOpen],
     queryFn: async () => {
-      const res = await courtServices.getAllCourts("", 1, 100);
+      const res = await adminCourtServices.getAllCourts("", 1, 100);
       if (res.status !== 200) {
         throw new Error(res.statusText);
       }

@@ -1,7 +1,7 @@
+import { CreateUserFormSchema } from "@/features/admin/users/forms/userForm";
 import instance from "@/lib/axios/instance";
-import { CreateUserFormSchema } from "../forms/userForm";
 
-const userService = {
+export const adminUserServices = {
   getAllUsers: (query: string, page: number, limit: number) =>
     instance.get(`/admin/users?query=${query}&page=${page}&limit=${limit}`),
   createUser: (data: CreateUserFormSchema) =>
@@ -13,5 +13,3 @@ const userService = {
       validateStatus: () => true,
     }),
 };
-
-export default userService;

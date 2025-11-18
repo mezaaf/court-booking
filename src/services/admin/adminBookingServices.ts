@@ -1,5 +1,5 @@
+import { BookingStatusFormSchema } from "@/features/admin/bookings/forms/bookingStatusForm";
 import instance from "@/lib/axios/instance";
-import { BookingStatusFormSchema } from "../forms/bookingStatusForm";
 
 export const adminBookingServices = {
   getAllBookings: (page: number, limit: number) => {
