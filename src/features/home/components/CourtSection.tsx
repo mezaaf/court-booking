@@ -1,30 +1,10 @@
 "use client";
 import PaginationData from "@/components/common/PaginationData";
-import { Court } from "@/generated/prisma/client";
-import { useQuery } from "@tanstack/react-query";
-import { useSearchParams } from "next/navigation";
+import { useCourtSection } from "../hooks/useCourtSection";
 import CourtCard from "./CourtCard";
-import { courtServices } from "@/services/public/courtServices";
 
 const CourtSection = () => {
-  const searchParams = useSearchParams();
-  const currentPage = Number(searchParams.get("page")) || 1;
-  const currentLimit = Number(searchParams.get("limit")) || 3;
-  const { data: activeCourtsResponse } = useQuery({
-    queryKey: ["paginationActiveCourts", currentPage, currentLimit],
-    queryFn: async () => {
-      const res = await courtServices.getAllActiveCourts(
-        currentPage,
-        currentLimit
-      );
-      if (res.status !== 200) return [];
-      return res.data;
-    },
-  });
-
-  const activeCourts: Court[] = activeCourtsResponse?.activeCourts || [];
-  const total = activeCourtsResponse?.total || 0;
-
+  const { activeCourts, currentLimit, total } = useCourtSection();
   return (
     <div className="w-full flex flex-col items-center max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 min-h-screen py-8 sm:py-12 lg:py-16 gap-4 sm:gap-6 lg:gap-8">
       <h1 className="text-3xl font-bold max-w-md text-center">
