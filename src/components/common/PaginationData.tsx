@@ -1,6 +1,4 @@
 "use client";
-
-import { LIMIT_LIST } from "@/constant/dataTableConstant";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Label } from "../ui/label";
 import {
@@ -12,38 +10,37 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
+import { LIMIT_LIST } from "@/constant/dataTableConstant";
 import PaginationDataTable from "./PaginationDataTable";
 
-const PaginationData = ({
-  isLimit = false,
-  total,
-  refetch,
-}: {
+interface Props {
   isLimit?: boolean;
   total: number;
-  refetch?: () => void;
-}) => {
+  limit?: number;
+}
+
+export default function PaginationData({
+  isLimit = true,
+  total,
+  limit,
+}: Props) {
   const router = useRouter();
   const searchParams = useSearchParams();
 
   const currentPage = Number(searchParams.get("page")) || 1;
-  const currentLimit = Number(searchParams.get("limit")) || LIMIT_LIST[0];
-  console.log(currentLimit);
+  const currentLimit =
+    Number(searchParams.get("limit")) || limit || LIMIT_LIST[0];
   const totalPages = Math.ceil(total / currentLimit);
 
   const updateUrlParams = (params: { page?: number; limit?: number }) => {
     const newParams = new URLSearchParams(searchParams.toString());
-    if (params.page !== undefined) {
+    if (params.page !== undefined)
       newParams.set("page", params.page.toString());
-    }
-    if (params.limit !== undefined) {
+    if (params.limit !== undefined)
       newParams.set("limit", params.limit.toString());
-    }
     router.replace(`?${newParams.toString()}`, { scroll: false });
-    if (refetch) {
-      refetch();
-    }
   };
+
   return (
     <div className="my-2 flex items-center justify-between">
       {isLimit && (
@@ -51,12 +48,12 @@ const PaginationData = ({
           <Label>Limit</Label>
           <Select
             value={currentLimit.toString()}
-            onValueChange={(val) =>
-              updateUrlParams({ limit: Number(val), page: 1 })
+            onValueChange={(value) =>
+              updateUrlParams({ limit: Number(value), page: 1 })
             }
           >
             <SelectTrigger>
-              <SelectValue placeholder="Select a limit" />
+              <SelectValue placeholder="Select Limit" />
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
@@ -71,15 +68,14 @@ const PaginationData = ({
           </Select>
         </div>
       )}
+
       {totalPages > 1 && (
         <PaginationDataTable
-          totalPages={totalPages}
           currentPage={currentPage}
+          totalPages={totalPages}
           onPageChange={(page) => updateUrlParams({ page })}
         />
       )}
     </div>
   );
-};
-
-export default PaginationData;
+}

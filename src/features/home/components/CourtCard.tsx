@@ -21,7 +21,6 @@ const CourtCard = ({
         <Image
           src={img}
           alt={title}
-          layout="responsive"
           width={500}
           height={300}
           className="w-full object-cover object-center"

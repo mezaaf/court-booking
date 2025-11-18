@@ -26,13 +26,18 @@ const HeroBookForm = () => {
   const { data: activeCourts } = useQuery({
     queryKey: ["allActiveCourts"],
     queryFn: async () => {
-      const res = await courtServices.getAllActiveCourts(1, 100);
+      const res = await courtServices.getAllActiveCourts(
+        undefined,
+        undefined,
+        true
+      );
       if (res.status !== 200) {
         throw new Error(res.statusText);
       }
       return res.data as Court[];
     },
   });
+
   const [open, setOpen] = useState(false);
   const form = useForm();
   return (

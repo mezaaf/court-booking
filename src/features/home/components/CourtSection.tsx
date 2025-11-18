@@ -8,25 +8,22 @@ import { courtServices } from "@/services/public/courtServices";
 
 const CourtSection = () => {
   const searchParams = useSearchParams();
-  const currentPage = Number(searchParams.get("page")) ?? 1;
-  const currentLimit = Number(searchParams.get("limit")) ?? 3;
-  console.log(currentPage);
-  const { data: activeCourtsResponse, refetch: refetchActiveCourts } = useQuery(
-    {
-      queryKey: ["paginationActiveCourts", currentPage, currentLimit],
-      queryFn: async () => {
-        const res = await courtServices.getAllActiveCourts(
-          currentPage,
-          currentLimit
-        );
-        if (res.status !== 200) return [];
-        return res.data;
-      },
-    }
-  );
+  const currentPage = Number(searchParams.get("page")) || 1;
+  const currentLimit = Number(searchParams.get("limit")) || 3;
+  const { data: activeCourtsResponse } = useQuery({
+    queryKey: ["paginationActiveCourts", currentPage, currentLimit],
+    queryFn: async () => {
+      const res = await courtServices.getAllActiveCourts(
+        currentPage,
+        currentLimit
+      );
+      if (res.status !== 200) return [];
+      return res.data;
+    },
+  });
 
   const activeCourts: Court[] = activeCourtsResponse?.activeCourts || [];
-  const total = activeCourtsResponse?.total ?? 0;
+  const total = activeCourtsResponse?.total || 0;
 
   return (
     <div className="w-full flex flex-col items-center max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 min-h-screen py-8 sm:py-12 lg:py-16 gap-4 sm:gap-6 lg:gap-8">
@@ -50,7 +47,7 @@ const CourtSection = () => {
             />
           ))}
       </div>
-      <PaginationData total={total} refetch={refetchActiveCourts} />
+      <PaginationData limit={currentLimit} total={total} isLimit={false} />
     </div>
   );
 };
