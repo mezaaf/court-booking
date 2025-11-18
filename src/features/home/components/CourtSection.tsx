@@ -8,7 +8,7 @@ import CourtCard from "@/components/common/CourtCard";
 const CourtSection = () => {
   const { activeCourts, currentLimit, total } = useCourtSection();
   return (
-    <div className="w-full flex flex-col items-center max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 min-h-screen gap-4 sm:gap-6 lg:gap-8 mt-16 sm:mt-20 lg:mt-24">
+    <div className="w-full flex flex-col items-center max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 gap-4 sm:gap-6 lg:gap-8 mt-16 sm:mt-20 lg:mt-24">
       <h1 className="text-3xl font-bold max-w-md text-center">
         Jelajahi & Pesan Lapangan Badminton di Sekitar Anda
       </h1>

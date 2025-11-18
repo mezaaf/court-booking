@@ -1,4 +1,5 @@
 "use client";
+import ContactSection from "../components/ContactSection";
 import CourtSection from "../components/CourtSection";
 import HeroSection from "../components/HeroSection";
 import WhyChooseUsSection from "../components/WhyChooseUsSection";
@@ -9,6 +10,7 @@ const HomePage = () => {
       <HeroSection />
       <WhyChooseUsSection />
       <CourtSection />
+      <ContactSection />
     </div>
   );
 };

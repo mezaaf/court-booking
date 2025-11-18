@@ -35,13 +35,16 @@ const Navbar = () => {
         </Link>
         <div className="flex gap-4 items-center">
           <Link href="/" className="text-white font-semibold">
-            Home
+            Beranda
           </Link>
-          <Link href="/contact" className="text-white font-semibold">
-            Contact
+          <Link href="/courts" className="text-white font-semibold">
+            Lapangan
           </Link>
           <Link href="/bookings" className="text-white font-semibold">
             Booking
+          </Link>
+          <Link href="/#contact" className="text-white font-semibold">
+            Kontak
           </Link>
           {!session?.user && !isPending ? (
             <Link href="/login">
