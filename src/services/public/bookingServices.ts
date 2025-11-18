@@ -1,5 +1,5 @@
+import { BookingFormSchema } from "@/features/bookings/forms/bookingForm";
 import instance from "@/lib/axios/instance";
-import { BookingFormSchema } from "../forms/bookingForm";
 
 export const bookingServices = {
   getAvailableTime: async (id: string, date: string) => {

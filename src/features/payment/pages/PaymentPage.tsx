@@ -1,5 +1,5 @@
 "use client";
-import BookingDetailCard from "../components/BookingDetailCard";
+import DetailBookingCard from "@/components/common/DetailBookingCard";
 import PaymentDetailCard from "../components/PaymentDetailCard";
 import { usePaymentPage } from "../hooks/usePaymentPage";
 
@@ -17,9 +17,10 @@ const PaymentPage = () => {
         </p>
       </div>
       <div className="w-full flex gap-4">
-        <BookingDetailCard
-          bookingDetails={bookingDetails}
-          isLoadingBookingDetails={isLoadingBookingDetails}
+        <DetailBookingCard
+          booking={bookingDetails}
+          isLoading={isLoadingBookingDetails}
+          withPayButton={false}
         />
         <PaymentDetailCard
           bookingId={bookingDetails?.id || null}

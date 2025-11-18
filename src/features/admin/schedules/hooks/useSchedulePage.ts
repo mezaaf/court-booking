@@ -1,7 +1,7 @@
 import useDataTable from "@/hooks/useDataTable";
 import { useQuery } from "@tanstack/react-query";
-import scheduleService from "../services/schedule";
 import { Schedule } from "@/types/schedule";
+import adminScheduleServices from "@/services/admin/adminScheduleServices";
 
 export const useSchedulePage = () => {
   const { currentPage, currentLimit, handlePageChange, handleLimitChange } =
@@ -14,7 +14,7 @@ export const useSchedulePage = () => {
   } = useQuery({
     queryKey: ["schedules", currentPage, currentLimit],
     queryFn: async () => {
-      const res = await scheduleService.getAllSchedules(
+      const res = await adminScheduleServices.getAllSchedules(
         currentPage,
         currentLimit
       );

@@ -1,5 +1,5 @@
+import adminScheduleServices from "@/services/admin/adminScheduleServices";
 import { useState } from "react";
-import scheduleService from "../services/schedule";
 import { toast } from "sonner";
 
 export const useDialogDeleteSchedule = (
@@ -11,7 +11,7 @@ export const useDialogDeleteSchedule = (
 
   const handleDelete = async () => {
     setIsLoading(true);
-    const res = await scheduleService.deleteSchedule(scheduleId);
+    const res = await adminScheduleServices.deleteSchedule(scheduleId);
     if (res.status !== 200) {
       toast.error("Gagal", { description: res.statusText });
     } else {

@@ -6,9 +6,9 @@ import {
 } from "../forms/paymentForm";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { TransferPaymentPayload } from "@/types/payment";
-import { paymentServices } from "../services/paymentServices";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { paymentServices } from "@/services/public/paymentServices";
 
 export const useTransferPaymentForm = (bookingId: string) => {
   const router = useRouter();

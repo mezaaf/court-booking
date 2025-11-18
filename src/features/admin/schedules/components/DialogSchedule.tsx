@@ -22,16 +22,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useQuery } from "@tanstack/react-query";
 import { Edit2Icon, PlusCircleIcon } from "lucide-react";
-import { useState } from "react";
-import { Controller, useForm } from "react-hook-form";
-import { scheduleFormSchema, ScheduleFormSchema } from "../forms/scheduleForm";
-import { zodResolver } from "@hookform/resolvers/zod";
-import scheduleService from "../services/schedule";
-import { toast } from "sonner";
+import { Controller } from "react-hook-form";
 import { DAY_OF_WEEK_LABELS } from "../constants/scheduleConstant";
-import { adminCourtServices } from "@/services/admin/adminCourtServices";
+import { useDialogSchedule } from "../hooks/useDialogeSchedule";
 const DialogSchedule = ({
   mode,
   refetchSchedules,
@@ -49,61 +43,15 @@ const DialogSchedule = ({
     isClosed: boolean;
   };
 }) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const form = useForm<ScheduleFormSchema>({
-    resolver: zodResolver(scheduleFormSchema),
-    defaultValues: {
-      courtId: initialValues?.courtId || "",
-      dayOfWeek: initialValues?.dayOfWeek || "",
-      openTime: initialValues?.openTime || "",
-      closeTime: initialValues?.closeTime || "",
-      isClosed: initialValues?.isClosed || false,
-    },
-  });
-
-  const onSubmit = form.handleSubmit(async (data: ScheduleFormSchema) => {
-    setIsLoading(true);
-    if (mode === "create") {
-      const response = await scheduleService.createSchedule(data);
-      console.log(response);
-      if (response.status === 201) {
-        toast.success("Berhasil", { description: response.statusText });
-        refetchSchedules();
-        form.reset();
-        setIsOpen(false);
-      } else {
-        toast.error("Gagal", { description: response.statusText });
-      }
-    } else {
-      const response = await scheduleService.updateSchedule(
-        scheduleId as string,
-        data
-      );
-      if (response.status === 200) {
-        toast.success("Berhasil", { description: response.statusText });
-        refetchSchedules();
-        form.reset();
-        setIsOpen(false);
-      } else {
-        toast.error("Gagal", { description: response.statusText });
-      }
-    }
-    setIsLoading(false);
-  });
-
-  const { data: courts = [], isLoading: isCourtsLoading } = useQuery({
-    queryKey: ["courts-list-for-schedule-dialog", isOpen],
-    queryFn: async () => {
-      const res = await adminCourtServices.getAllCourts("", 1, 100);
-      if (res.status !== 200) {
-        throw new Error(res.statusText);
-      }
-      return res.data.courts;
-    },
-    enabled: isOpen,
-  });
-
+  const {
+    isOpen,
+    setIsOpen,
+    form,
+    isLoading,
+    onSubmit,
+    courts,
+    isCourtsLoading,
+  } = useDialogSchedule(mode, refetchSchedules, scheduleId, initialValues);
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>

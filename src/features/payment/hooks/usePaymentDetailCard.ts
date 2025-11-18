@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { bankServices } from "../services/bankServices";
 import { BankAccount } from "@/generated/prisma/client";
 import { useQuery } from "@tanstack/react-query";
-import { paymentServices } from "../services/paymentServices";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { bankServices } from "@/services/public/bankServices";
+import { paymentServices } from "@/services/public/paymentServices";
 
 export const usePaymentDetailCard = (bookingId: string | null) => {
   const router = useRouter();
