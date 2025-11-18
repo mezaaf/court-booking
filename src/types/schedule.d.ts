@@ -1,8 +1,9 @@
-import { Prisma } from "@prisma/client";
+import { Prisma } from "@/generated/prisma/client";
 
 export type Schedule = Prisma.ScheduleGetPayload<{
   select: {
     id: true;
+    courtId: true;
     dayOfWeek: true;
     openTime: true;
     closeTime: true;

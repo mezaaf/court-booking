@@ -17,6 +17,8 @@ export async function GET(req: NextRequest) {
         orderBy: {
           dayOfWeek: "asc",
         },
+        skip: offset,
+        take: limit,
         include: {
           court: {
             select: {
@@ -26,8 +28,6 @@ export async function GET(req: NextRequest) {
             },
           },
         },
-        skip: offset,
-        take: limit,
       }),
     ]);
     return NextResponse.json(
@@ -71,6 +71,18 @@ export async function POST(req: Request) {
   }
   const data: ScheduleFormSchema = await req.json();
   try {
+    const existingSchedule = await prisma.schedule.findFirst({
+      where: {
+        courtId: data.courtId,
+        dayOfWeek: Number(data.dayOfWeek),
+      },
+    });
+    if (existingSchedule) {
+      return NextResponse.json(null, {
+        status: 400,
+        statusText: "Schedule already exists",
+      });
+    }
     const schedule = await prisma.schedule.create({
       data: {
         courtId: data.courtId,

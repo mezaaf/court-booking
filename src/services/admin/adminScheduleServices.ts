@@ -6,7 +6,9 @@ const adminScheduleServices = {
     return instance.get(`/admin/schedules?page=${page}&limit=${limit}`);
   },
   createSchedule: async (data: ScheduleFormSchema) => {
-    return instance.post("/admin/schedules", data);
+    return instance.post("/admin/schedules", data, {
+      validateStatus: () => true,
+    });
   },
   updateSchedule: async (scheduleId: string, data: ScheduleFormSchema) => {
     return instance.put(`/admin/schedules/${scheduleId}`, data);

@@ -30,7 +30,7 @@ const CourtCard = ({
         <h2 className="text-xl font-semibold mb-2">{title}</h2>
         <p>{convertIDR(price)}</p>
         <Button className="mt-4 w-full bg-sky-700 hover:bg-sky-700/80" asChild>
-          <Link href={`/courts/${id}`}>Lihat Jadwal</Link>
+          <Link href={`/courts/${id}`}>Lihat Detail</Link>
         </Button>
       </CardContent>
     </Card>

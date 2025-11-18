@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from "next/server";
 export async function GET(req: NextRequest) {
   const searchParams = req.nextUrl.searchParams;
   const page = Number(searchParams.get("page") || "1");
-  const limit = Number(searchParams.get("limit") || "3");
+  const limit = Number(searchParams.get("limit") || "10");
   const all = searchParams.get("all") === "true";
   try {
     if (all === true) {

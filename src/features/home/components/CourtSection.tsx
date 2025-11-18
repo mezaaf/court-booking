@@ -1,7 +1,9 @@
 "use client";
 import PaginationData from "@/components/common/PaginationData";
 import { useCourtSection } from "../hooks/useCourtSection";
-import CourtCard from "./CourtCard";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import CourtCard from "@/components/common/CourtCard";
 
 const CourtSection = () => {
   const { activeCourts, currentLimit, total } = useCourtSection();
@@ -27,7 +29,12 @@ const CourtSection = () => {
             />
           ))}
       </div>
-      <PaginationData limit={currentLimit} total={total} isLimit={false} />
+      <div className="w-full flex items-center justify-between gap-4 sm:gap-6 lg:gap-8">
+        <PaginationData limit={currentLimit} total={total} isLimit={false} />
+        <Button asChild variant="outline">
+          <Link href="/courts">Lihat Semua Lapangan</Link>
+        </Button>
+      </div>
     </div>
   );
 };
