@@ -28,7 +28,7 @@ const CourtCard = ({
       </CardHeader>
       <CardContent className="flex flex-col items-center">
         <h2 className="text-xl font-semibold mb-2">{title}</h2>
-        <p>{convertIDR(price)}</p>
+        <p>{convertIDR(price)}/jam</p>
         <Button className="mt-4 w-full bg-sky-700 hover:bg-sky-700/80" asChild>
           <Link href={`/courts/${id}`}>Lihat Detail</Link>
         </Button>
