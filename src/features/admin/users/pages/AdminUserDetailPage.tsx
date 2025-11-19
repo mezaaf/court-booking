@@ -1,12 +1,9 @@
 "use client";
 
-import { adminUserServices } from "@/services/admin/adminUserServices";
-import { useQuery } from "@tanstack/react-query";
-import { useParams } from "next/navigation";
+import AdminRevokeAllSessionForUser from "../components/AdminRevokeAllSessionForUser";
 import AdminUserEmailForm from "../components/AdminUserEmailForm";
 import AdminUserPasswordForm from "../components/AdminUserPasswordForm";
 import AdminUserProfileDetailForm from "../components/AdminUserProfileDetailForm";
-import AdminRevokeAllSessionForUser from "../components/AdminRevokeAllSessionForUser";
 import { useAdminUserDetailPage } from "../hooks/useAdminUserDetailPage";
 
 const AdminUserDetailPage = () => {
