@@ -7,6 +7,9 @@ import DialogCreateUser from "../components/DialogCreateUser";
 import DialogDeleteUser from "../components/DialogDeleteUser";
 import { USER_TABLE_HEADER } from "../constants/userConstant";
 import { useUsersPage } from "../hooks/useUsersPage";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import { EditIcon } from "lucide-react";
 
 const UsersPage = () => {
   const {
@@ -39,18 +42,15 @@ const UsersPage = () => {
       </p>,
 
       <div key={user.id} className="flex items-center gap-2">
-        {/* <DialogCourt
-            mode="update"
-            refetchCourts={refetchCourts}
-            courtId={court.id}
-            initialValues={{
-              name: court.name,
-              description: court.description || undefined,
-              pricePerHour: court.pricePerHour.toString(),
-              image: court.image as string,
-              isActive: court.isActive,
-            }}
-          /> */}
+        <Button
+          asChild
+          size={"icon"}
+          className="bg-amber-500 hover:bg-amber-500/80"
+        >
+          <Link href={`/admin/users/${user.id}`}>
+            <EditIcon />
+          </Link>
+        </Button>
 
         <DialogDeleteUser
           userId={user.id}
