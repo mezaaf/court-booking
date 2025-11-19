@@ -7,20 +7,10 @@ import AdminUserEmailForm from "../components/AdminUserEmailForm";
 import AdminUserPasswordForm from "../components/AdminUserPasswordForm";
 import AdminUserProfileDetailForm from "../components/AdminUserProfileDetailForm";
 import AdminRevokeAllSessionForUser from "../components/AdminRevokeAllSessionForUser";
+import { useAdminUserDetailPage } from "../hooks/useAdminUserDetailPage";
 
 const AdminUserDetailPage = () => {
-  const params = useParams();
-  const userId = params.id as string;
-
-  const { data: user } = useQuery({
-    queryKey: ["admin-user-detail", userId],
-    queryFn: async () => {
-      const res = await adminUserServices.getUserById(userId);
-      if (res.status !== 200) return null;
-      return res.data;
-    },
-  });
-
+  const { user } = useAdminUserDetailPage();
   return (
     <div className="flex flex-col gap-4 sm:gap-6 lg:gap-8 w-full">
       <h1 className="text-2xl font-bold">Detail User</h1>
