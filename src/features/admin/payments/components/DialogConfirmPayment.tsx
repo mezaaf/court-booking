@@ -11,10 +11,8 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
-import { adminPaymentServices } from "@/services/admin/adminPaymentServices";
 import { OctagonAlert } from "lucide-react";
-import { useState } from "react";
-import { toast } from "sonner";
+import { useDialogConfirmPayment } from "../hooks/useDialogConfirmPayment";
 
 const DialogConfirmPayment = ({
   paymentId,
@@ -23,21 +21,8 @@ const DialogConfirmPayment = ({
   paymentId: string;
   refetchPayments: () => void;
 }) => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [open, setOpen] = useState(false);
-
-  const handleConfirmPayment = async () => {
-    setIsLoading(true);
-    const res = await adminPaymentServices.confirmPayment(paymentId);
-    if (res.status === 200) {
-      toast.success("Berhasil", { description: res.statusText });
-      setOpen(false);
-      refetchPayments();
-    } else {
-      toast.error("Gagal", { description: res.statusText });
-    }
-    setIsLoading(false);
-  };
+  const { isLoading, open, setOpen, handleConfirmPayment } =
+    useDialogConfirmPayment(paymentId, refetchPayments);
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>
       <AlertDialogTrigger asChild>
