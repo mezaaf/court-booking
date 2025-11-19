@@ -5,6 +5,8 @@ import { auth } from "@/server/auth/auth";
 import prisma from "@/server/prisma";
 import { APIError } from "better-auth";
 import { NextRequest, NextResponse } from "next/server";
+import path from "path";
+import fs from "fs";
 
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
@@ -103,6 +105,11 @@ export async function POST(req: NextRequest) {
   }
 
   const data: CreateUserFormSchema = await req.json();
+  const imagePath = path.join(process.cwd(), "public/images/user.jpg");
+  const imageBuffer = fs.readFileSync(imagePath);
+  const base64Image = `data:image/jpeg;base64,${imageBuffer.toString(
+    "base64"
+  )}`;
 
   try {
     await auth.api.createUser({
@@ -111,6 +118,9 @@ export async function POST(req: NextRequest) {
         email: data.email,
         password: data.password,
         role: data.role === true ? "admin" : "user",
+        data: {
+          image: base64Image,
+        },
       },
     });
     return NextResponse.json(null, {

@@ -3,7 +3,6 @@
 import DataTable from "@/components/common/DataTable";
 import { Input } from "@/components/ui/input";
 import Image from "next/image";
-import { useMemo } from "react";
 import DialogCreateUser from "../components/DialogCreateUser";
 import DialogDeleteUser from "../components/DialogDeleteUser";
 import { USER_TABLE_HEADER } from "../constants/userConstant";
@@ -21,27 +20,26 @@ const UsersPage = () => {
     handleSearchChange,
     refetchUsers,
   } = useUsersPage();
-  const filteredData = useMemo(() => {
-    return (users || []).map((user, index) => {
-      return [
-        currentLimit * (currentPage - 1) + index + 1,
-        <div className="flex items-center gap-2" key={user.id}>
-          <Image
-            src={user.image ?? "/images/user.jpg"}
-            alt={user.name}
-            width={32}
-            height={32}
-            className="rounded-full aspect-square w-8 object-cover object-center"
-          />
-          {user.name}
-        </div>,
-        user.email,
-        <p key={user.id} className="capitalize">
-          {user.role}
-        </p>,
+  const filteredData = (users || []).map((user, index) => {
+    return [
+      currentLimit * (currentPage - 1) + index + 1,
+      <div className="flex items-center gap-2" key={user.id}>
+        <Image
+          src={user.image !== null ? user.image : "/images/user.jpg"}
+          alt={user.name}
+          width={32}
+          height={32}
+          className="rounded-full aspect-square w-8 object-cover object-center"
+        />
+        {user.name}
+      </div>,
+      user.email,
+      <p key={user.id} className="capitalize">
+        {user.role}
+      </p>,
 
-        <div key={user.id} className="flex items-center gap-2">
-          {/* <DialogCourt
+      <div key={user.id} className="flex items-center gap-2">
+        {/* <DialogCourt
             mode="update"
             refetchCourts={refetchCourts}
             courtId={court.id}
@@ -54,15 +52,14 @@ const UsersPage = () => {
             }}
           /> */}
 
-          <DialogDeleteUser
-            userId={user.id}
-            name={user.name}
-            refetch={refetchUsers}
-          />
-        </div>,
-      ];
-    });
-  }, [currentLimit, currentPage, refetchUsers, users]);
+        <DialogDeleteUser
+          userId={user.id}
+          name={user.name}
+          refetch={refetchUsers}
+        />
+      </div>,
+    ];
+  });
   return (
     <div className="flex flex-col gap-4 sm:gap-6 lg:gap-8 w-full">
       <div className="flex items-center justify-between">
