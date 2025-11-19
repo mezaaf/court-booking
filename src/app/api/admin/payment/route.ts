@@ -4,13 +4,15 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
   const searchParams = req.nextUrl.searchParams;
+  const page = Number(searchParams.get("page") || "1");
+  const limit = Number(searchParams.get("limit") || "10");
+
+  const offset = (page - 1) * limit;
+
   const headers = {
     authorization: req.headers.get("authorization") || "",
     cookie: req.headers.get("cookie") || "",
   };
-  const page = Number(searchParams.get("page")) || 1;
-  const limit = Number(searchParams.get("limit")) || 10;
-
   const session = await auth.api.getSession({ headers });
 
   if (!session) {
@@ -27,24 +29,24 @@ export async function GET(req: NextRequest) {
     });
   }
 
-  const offset = (page - 1) * limit;
   try {
-    const [total, bookings] = await Promise.all([
-      prisma.booking.count(),
-      prisma.booking.findMany({
+    const [total, payments] = await Promise.all([
+      prisma.payment.count(),
+      prisma.payment.findMany({
+        include: {
+          booking: {
+            include: {
+              user: true,
+              court: true,
+            },
+          },
+        },
         skip: offset,
         take: limit,
-        orderBy: { createdAt: "desc" },
-        include: {
-          user: true,
-          court: true,
-          payments: true,
-        },
       }),
     ]);
-
     return NextResponse.json(
-      { total, bookings },
+      { total, payments },
       { status: 200, statusText: "OK" }
     );
   } catch (error) {
@@ -54,7 +56,7 @@ export async function GET(req: NextRequest) {
         statusText: error.message,
       });
     } else {
-      console.log("Error fetching bookings: ", error);
+      console.log("Error fetching payments: ", error);
       return NextResponse.json(null, {
         status: 500,
         statusText: "Internal Server Error",

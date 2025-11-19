@@ -1,3 +1,4 @@
+import { PaymentMethod, PaymentStatus } from "@/generated/prisma/enums";
 import { auth } from "@/server/auth/auth";
 import prisma from "@/server/prisma";
 import { TransferPaymentPayload } from "@/types/payment";
@@ -35,7 +36,7 @@ export async function POST(req: Request) {
       return NextResponse.json(null, {
         status: 400,
         statusText:
-          "Pembayaran untuk booking ini sudah ada dan akan segera dikonfirmasi.",
+          "Data pembayaran untuk booking ini sudah ada dan akan segera dikonfirmasi.",
       });
     }
 
@@ -54,9 +55,9 @@ export async function POST(req: Request) {
         amount: existingBooking.totalPrice,
         proofOfPayment: data.proofOfPayment,
         bankAccountId: data.bankAccountId,
-        method: "BANK_TRANSFER",
-        status: "PENDING",
-        note: `Pembayaran melalui transfer bank ${bankAccount.bankName} - ${bankAccount.accountNumber}`,
+        method: PaymentMethod.BANK_TRANSFER,
+        status: PaymentStatus.PENDING,
+        note: `Transfer via ${bankAccount.bankName} - ${bankAccount.accountNumber}`,
       },
     });
     return NextResponse.json(null, {
